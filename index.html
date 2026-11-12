@@ -7,21 +7,22 @@
     content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <title>Salud Ambiental Apure - Sistema Profesional de Reportes</title>
 
-   <!-- Tailwind CSS desde CDN para que funcione directamente en GitHub Pages sin carpetas locales -->
+  <!-- Tailwind CSS desde CDN para que funcione directamente en GitHub Pages sin carpetas locales -->
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- Lucide Icons desde CDN (versión estable) -->
   <script src="https://unpkg.com/lucide@0.344.0/dist/umd/lucide.min.js"></script>
+
   <style>
-    /* Aumenta el tamaño base de toda la app para que se vea más grande en la APK */
+    /* Tamaño base optimizado para navegadores web móviles (Chrome, Safari, etc.) */
     html {
-      font-size: 24px;
-      /* Puedes probar con 18px o 19px según tu preferencia */
+      font-size: 16px;
     }
 
     body {
       -webkit-tap-highlight-color: transparent;
       user-select: none;
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      overflow-x: hidden;
     }
 
     input,
@@ -52,709 +53,845 @@
       animation: fadeIn 0.25s ease-out forwards;
     }
 
-    body {
-      -webkit-tap-highlight-color: transparent;
-      user-select: none;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    /* =======================================================
+     * ESTILOS Y ANIMACIONES DEL MOSQUITO CÓMICO (AEDES AEGYPTI)
+     * ======================================================= */
+    #mosquito-actor {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 48px;
+      height: 48px;
+      z-index: 9999;
+      cursor: pointer;
+      touch-action: manipulation;
+      will-change: transform;
+      filter: drop-shadow(0 6px 6px rgba(0, 0, 0, 0.28));
+      transition: opacity 0.3s ease;
     }
 
-    input,
-    select,
-    textarea {
-      user-select: text;
-    }
+    /* Aleteo ultra rápido de las alas */
+    @keyframes wingFlapLeft {
 
-    .input-missing {
-      border-color: #f97316 !important;
-      background-color: #fff7ed !important;
-    }
-
-    /* Animación suave para modales y alertas */
-    @keyframes fadeIn {
-      from {
-        opacity: 0;
-        transform: translateY(-4px);
+      0%,
+      100% {
+        transform: rotate(-18deg) scaleY(1);
       }
 
-      to {
-        opacity: 1;
-        transform: translateY(0);
+      50% {
+        transform: rotate(32deg) scaleY(0.45);
       }
     }
 
-    .animate-fade-in {
-      animation: fadeIn 0.25s ease-out forwards;
+    @keyframes wingFlapRight {
+
+      0%,
+      100% {
+        transform: rotate(18deg) scaleY(1);
+      }
+
+      50% {
+        transform: rotate(-32deg) scaleY(0.45);
+      }
+    }
+
+    .mosquito-wing-left {
+      transform-origin: 24px 21px;
+      animation: wingFlapLeft 0.055s infinite linear;
+    }
+
+    .mosquito-wing-right {
+      transform-origin: 24px 21px;
+      animation: wingFlapRight 0.055s infinite linear;
+    }
+
+    /* Globo de diálogo cómico del mosquito */
+    #mosquito-speech {
+      position: fixed;
+      z-index: 9998;
+      background: #1e293b;
+      color: #f8fafc;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 4px 9px;
+      border-radius: 12px;
+      white-space: nowrap;
+      pointer-events: none;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+      border: 1px solid #475569;
+      opacity: 0;
+      transition: opacity 0.2s ease;
     }
   </style>
 </head>
 
-<body class="bg-slate-50 text-slate-800 antialiased min-h-screen pb-32">
 
-  <!-- Header Superior con Banner Institucional Profesional -->
-  <header class="sticky top-0 z-50 bg-white/95 backdrop-blur-md shadow-sm border-b border-slate-200/80">
-    <div class="max-w-md mx-auto relative overflow-hidden bg-white">
-      <img src="banner.png" alt="Insalud Apure - Dirección Salud Ambiental"
-        class="w-full h-auto object-contain max-h-24 mx-auto block py-1"
-        onerror="this.onerror=null; this.parentElement.innerHTML='<div class=\'bg-gradient-to-r from-blue-900 via-indigo-900 to-slate-900 text-white p-3.5 flex items-center justify-between shadow-inner\'><div class=\'flex items-center space-x-3\'><div class=\'w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center border border-white/20 shadow-sm\'><i data-lucide=\'shield-check\' class=\'w-5 h-5 text-emerald-400\'></i></div><div><h1 class=\'text-sm font-bold tracking-wide leading-tight\'>Salud Ambiental</h1><p class=\'text-[19px] text-blue-200 font-medium\'>Sala Situacional, San Fernando de Apure</p></div></div><span class=\'px-2.5 py-1 rounded-full text-[10px] font-bold tracking-wider uppercase bg-emerald-500/20 text-emerald-300 border border-emerald-400/30\'>Gerson Solano V1.2</span></div>'; window.lucide && lucide.createIcons();">
+<!-- Header Superior con Banner Institucional Profesional -->
+<header class="sticky top-0 z-50 bg-white/95 backdrop-blur-md shadow-sm border-b border-slate-200/80">
+  <div class="max-w-md mx-auto relative overflow-hidden bg-white">
+    <img src="banner.png" alt="Insalud Apure - Dirección Salud Ambiental"
+      class="w-full h-auto object-contain max-h-24 mx-auto block py-1"
+      onerror="this.onerror=null; this.parentElement.innerHTML='<div class=\'bg-gradient-to-r from-blue-900 via-indigo-900 to-slate-900 text-white p-3.5 flex items-center justify-between shadow-inner\'><div class=\'flex items-center space-x-3\'><div class=\'w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center border border-white/20 shadow-sm shrink-0\'><i data-lucide=\'shield-check\' class=\'w-5 h-5 text-emerald-400\'></i></div><div><h1 class=\'text-base font-bold tracking-wide leading-tight\'>Salud Ambiental Apure</h1><p class=\'text-xs text-blue-200 font-medium\'>Sala Situacional, San Fernando</p></div></div><span class=\'px-2.5 py-1 rounded-full text-[10px] font-bold tracking-wider uppercase bg-emerald-500/20 text-emerald-300 border border-emerald-400/30 shrink-0\'>Gerson Solano V1.3</span></div>'; window.lucide && lucide.createIcons();">
+  </div>
+</header>
+
+<!-- Contenido Principal -->
+<main class="max-w-md mx-auto px-4 pt-4 space-y-4">
+
+  <!-- Notificación / Modal Interno Personalizado -->
+  <div id="custom-toast"
+    class="hidden fixed top-4 left-4 right-4 z-50 max-w-md mx-auto bg-slate-900/95 text-white px-4 py-3 rounded-2xl shadow-2xl border border-slate-700 flex items-center space-x-3 transition-all animate-fade-in">
+    <div id="toast-icon" class="p-1.5 rounded-xl bg-emerald-500/20 text-emerald-400">
+      <i data-lucide="check-circle-2" class="w-5 h-5"></i>
     </div>
-  </header>
-
-  <!-- Contenido Principal -->
-  <main class="max-w-md mx-auto px-4 pt-4 space-y-4">
-
-    <!-- Notificación / Modal Interno Personalizado -->
-    <div id="custom-toast"
-      class="hidden fixed top-4 left-4 right-4 z-50 max-w-md mx-auto bg-slate-900/95 text-white px-4 py-3 rounded-2xl shadow-2xl border border-slate-700 flex items-center space-x-3 transition-all animate-fade-in">
-      <div id="toast-icon" class="p-1.5 rounded-xl bg-emerald-500/20 text-emerald-400">
-        <i data-lucide="check-circle-2" class="w-5 h-5"></i>
-      </div>
-      <div class="flex-1">
-        <p id="toast-title" class="text-xs font-bold">Aviso</p>
-        <p id="toast-message" class="text-[19px] text-slate-300"></p>
-      </div>
-      <button onclick="hideToast()" class="text-slate-400 hover:text-white p-1">
-        <i data-lucide="x" class="w-4 h-4"></i>
-      </button>
+    <div class="flex-1">
+      <p id="toast-title" class="text-sm font-bold">Aviso</p>
+      <p id="toast-message" class="text-xs text-slate-300"></p>
     </div>
+    <button onclick="hideToast()" class="text-slate-400 hover:text-white p-1">
+      <i data-lucide="x" class="w-4 h-4"></i>
+    </button>
+  </div>
 
-    <!-- Banner Alerta de Celdas Faltantes -->
-    <div id="missing-alert"
-      class="hidden bg-amber-50/90 border border-amber-200/80 rounded-2xl p-3.5 text-xs text-amber-900 flex items-start space-x-3 shadow-sm">
-      <i data-lucide="alert-circle" class="w-5 h-5 text-amber-600 shrink-0 mt-0.5"></i>
-      <div class="flex-1">
-        <p class="font-bold mb-0.5 text-amber-900">Campos pendientes por completar</p>
-        <p id="missing-fields-list" class="text-amber-700 leading-relaxed text-[19px]"></p>
-        <p class="mt-1 text-[10px] text-amber-600 font-medium italic">Nota: Puede proceder con el envío aunque existan
-          campos vacíos.</p>
-      </div>
-    </div>
-
-    <!-- Selector de Programa Principal (Aedes vs Roedores) -->
-    <div class="grid grid-cols-2 gap-2 bg-slate-200/80 p-1.5 rounded-2xl shadow-inner">
-      <button type="button" id="tab-aedes" onclick="setProgram('aedes')"
-        class="py-2.5 px-3 rounded-xl font-bold text-xs flex items-center justify-center gap-2 transition-all duration-200 shadow-sm bg-white text-blue-900">
-        <i data-lucide="bug" class="w-4 h-4 text-blue-600"></i> Programa Aedes
-      </button>
-      <button type="button" id="tab-roedores" onclick="setProgram('roedores')"
-        class="py-2.5 px-3 rounded-xl font-semibold text-xs flex items-center justify-center gap-2 transition-all duration-200 text-slate-600 hover:text-slate-900">
-        <i data-lucide="rat" class="w-4 h-4 text-amber-600"></i> Control Roedores
-      </button>
-    </div>
-
-    <!-- Sub-selector Aedes (Abordaje / Tratamiento Focal) -->
-    <div id="sub-aedes-container"
-      class="grid grid-cols-2 gap-2 bg-blue-50/80 p-1.5 rounded-2xl border border-blue-100 shadow-sm">
-      <button type="button" id="subtab-abordaje" onclick="setAedesType('abordaje')"
-        class="py-2 px-3 rounded-xl text-xs font-bold text-center transition-all bg-blue-700 text-white shadow-sm">
-        Abordaje Comunitario
-      </button>
-      <button type="button" id="subtab-focal" onclick="setAedesType('focal')"
-        class="py-2 px-3 rounded-xl text-xs font-semibold text-center transition-all text-slate-600 hover:bg-white/50">
-        Tratamiento Focal
-      </button>
-    </div>
-
-    <!-- FORMULARIO GENERAL -->
-    <form id="reportForm" oninput="checkMissingFields()" onchange="checkMissingFields()" class="space-y-4">
-
-      <!-- CARD 1: DATOS GENERALES Y UBICACIÓN -->
-      <div class="bg-white rounded-2xl p-4 shadow-sm border border-slate-200/80 space-y-3">
-        <div class="flex items-center space-x-2.5 border-b border-slate-100 pb-2.5">
-          <div class="p-1.5 rounded-xl bg-blue-50 text-blue-700">
-            <i data-lucide="map-pin" class="w-4 h-4"></i>
-          </div>
-          <h2 class="text-xs font-bold uppercase tracking-wider text-slate-700">Ubicación y Fecha</h2>
-        </div>
-
-        <div>
-          <label class="block text-xs font-semibold text-slate-600 mb-1">Fecha del Reporte</label>
-          <div class="grid grid-cols-3 gap-2">
-            <input type="number" id="fecha_dia" placeholder="Día" min="1" max="31"
-              class="data-field w-full px-3 py-2 text-sm bg-slate-50/80 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:bg-white text-center font-semibold"
-              data-label="Día">
-            <input type="number" id="fecha_mes" placeholder="Mes" min="1" max="12"
-              class="data-field w-full px-3 py-2 text-sm bg-slate-50/80 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:bg-white text-center font-semibold"
-              data-label="Mes">
-            <input type="number" id="fecha_ano" placeholder="Año" readonly
-              class="w-full px-3 py-2 text-sm bg-slate-100 border border-slate-200 rounded-xl text-center text-slate-500 font-semibold">
-          </div>
-        </div>
-
-        <div>
-          <label for="municipio" class="block text-xs font-semibold text-slate-600 mb-1">Municipio</label>
-          <select id="municipio" onchange="autoSelectResponsable(); checkMissingFields();"
-            class="data-field w-full px-3 py-2 text-sm bg-slate-50/80 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:bg-white font-semibold text-slate-700"
-            data-label="Municipio">
-            <option value="">-- Seleccionar Municipio --</option>
-            <option value="Achaguas">Achaguas</option>
-            <option value="San Fernando">San Fernando</option>
-            <option value="Biruaca">Biruaca</option>
-            <option value="Pedro Camejo">Pedro Camejo</option>
-            <option value="Romulo Gallego">Rómulo Gallegos</option>
-            <option value="Paez">Páez</option>
-            <option value="Muñoz">Muñoz</option>
-          </select>
-        </div>
-
-        <div class="grid grid-cols-2 gap-2">
-          <div>
-            <label for="parroquia" class="block text-xs font-semibold text-slate-600 mb-1">Parroquia</label>
-            <input type="text" id="parroquia" placeholder="Ej: El Recreo"
-              class="data-field w-full px-3 py-2 text-sm bg-slate-50/80 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:bg-white font-medium"
-              data-label="Parroquia">
-          </div>
-          <div>
-            <label for="sector" class="block text-xs font-semibold text-slate-600 mb-1">Sector</label>
-            <input type="text" id="sector" placeholder="Ej: Los Limones"
-              class="data-field w-full px-3 py-2 text-sm bg-slate-50/80 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:bg-white font-medium"
-              data-label="Sector">
-          </div>
-        </div>
-
-        <div>
-          <label for="asic" class="block text-xs font-semibold text-slate-600 mb-1">ASIC</label>
-          <input type="text" id="asic" placeholder="Nombre de ASIC"
-            class="data-field w-full px-3 py-2 text-sm bg-slate-50/80 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:bg-white font-medium"
-            data-label="ASIC">
-        </div>
-
-        <div class="pt-1">
-          <label class="block text-xs font-semibold text-slate-600 mb-1">Responsables Asignados</label>
-          <div class="space-y-1.5">
-            <input type="text" value="Epid. César Martínez" readonly
-              class="w-full px-3 py-1.5 text-xs bg-slate-100 border border-slate-200 rounded-xl text-slate-600 font-semibold">
-            <input type="text" value="Insp. Hugo Pérez" readonly
-              class="w-full px-3 py-1.5 text-xs bg-slate-100 border border-slate-200 rounded-xl text-slate-600 font-semibold">
-            <input type="text" id="responsable_local" placeholder="Responsable por Municipio (Automático)" readonly
-              class="w-full px-3 py-2 text-xs bg-blue-50/90 border border-blue-200 rounded-xl text-blue-900 font-bold shadow-inner">
-          </div>
-        </div>
-      </div>
-
-      <!-- CARD 2: TRATAMIENTO FOCAL - PACIENTES (Solo Tratamiento Focal) -->
-      <div id="section-pacientes"
-        class="hidden bg-white rounded-2xl p-4 shadow-sm border border-slate-200/80 space-y-3">
-        <div class="flex items-center justify-between border-b border-slate-100 pb-2.5">
-          <div class="flex items-center space-x-2.5">
-            <div class="p-1.5 rounded-xl bg-indigo-50 text-indigo-700">
-              <i data-lucide="users" class="w-4 h-4"></i>
-            </div>
-            <h2 class="text-xs font-bold uppercase tracking-wider text-slate-700">Datos de Pacientes</h2>
-          </div>
-        </div>
-
-        <div id="pacientes-list" class="space-y-3">
-          <!-- Pacientes inyectados dinámicamente -->
-        </div>
-
-        <button type="button" onclick="addPacienteField()"
-          class="w-full py-2.5 px-3 border-2 border-dashed border-indigo-200 hover:border-indigo-400 bg-indigo-50/40 text-indigo-700 font-bold text-xs rounded-xl flex items-center justify-center gap-2 transition-all shadow-sm">
-          <i data-lucide="user-plus" class="w-4 h-4"></i> Añadir Otro Paciente
-        </button>
-      </div>
-
-      <!-- CARD 3: CASAS (Aedes) -->
-      <div id="section-casas" class="bg-white rounded-2xl p-4 shadow-sm border border-slate-200/80 space-y-3">
-        <div class="flex items-center space-x-2.5 border-b border-slate-100 pb-2.5">
-          <div class="p-1.5 rounded-xl bg-emerald-50 text-emerald-700">
-            <i data-lucide="home" class="w-4 h-4"></i>
-          </div>
-          <h2 class="text-xs font-bold uppercase tracking-wider text-slate-700">Inspección de Casas</h2>
-        </div>
-
-        <div class="grid grid-cols-2 gap-2.5">
-          <div>
-            <label class="block text-[19px] font-semibold text-slate-500 mb-1">Visitadas</label>
-            <input type="number" id="casas_visitadas" value="0"
-              class="w-full px-3 py-2 text-sm bg-slate-50/80 border border-slate-200 rounded-xl text-center font-bold text-slate-700">
-          </div>
-          <div>
-            <label class="block text-[19px] font-semibold text-slate-500 mb-1">Inspeccionadas</label>
-            <input type="number" id="casas_inspeccionadas" value="0"
-              class="w-full px-3 py-2 text-sm bg-slate-50/80 border border-slate-200 rounded-xl text-center font-bold text-slate-700">
-          </div>
-          <div>
-            <label class="block text-[19px] font-semibold text-slate-500 mb-1">Positivas</label>
-            <input type="number" id="casas_positivas" value="0"
-              class="w-full px-3 py-2 text-sm bg-slate-50/80 border border-slate-200 rounded-xl text-center font-bold text-red-600">
-          </div>
-          <div>
-            <label class="block text-[19px] font-semibold text-slate-500 mb-1">Ausentes</label>
-            <input type="number" id="casas_ausentes" value="0"
-              class="w-full px-3 py-2 text-sm bg-slate-50/80 border border-slate-200 rounded-xl text-center font-bold text-slate-700">
-          </div>
-          <div>
-            <label class="block text-[19px] font-semibold text-slate-500 mb-1">Renuentes</label>
-            <input type="number" id="casas_renuentes" value="0"
-              class="w-full px-3 py-2 text-sm bg-slate-50/80 border border-slate-200 rounded-xl text-center font-bold text-slate-700">
-          </div>
-          <div>
-            <label class="block text-[19px] font-semibold text-slate-500 mb-1">Tratadas</label>
-            <input type="number" id="casas_tratadas" value="0"
-              class="w-full px-3 py-2 text-sm bg-slate-50/80 border border-slate-200 rounded-xl text-center font-bold text-slate-700">
-          </div>
-        </div>
-        <div>
-          <label class="block text-[19px] font-semibold text-slate-500 mb-1">Fumigadas</label>
-          <input type="number" id="casas_fumigadas" value="0"
-            class="w-full px-3 py-2 text-sm bg-slate-50/80 border border-slate-200 rounded-xl text-center font-bold text-slate-700">
-        </div>
-      </div>
-
-      <!-- CARD 3B: CASAS (Roedores) -->
-      <div id="section-casas-roedores"
-        class="hidden bg-white rounded-2xl p-4 shadow-sm border border-slate-200/80 space-y-3">
-        <div class="flex items-center space-x-2.5 border-b border-slate-100 pb-2.5">
-          <div class="p-1.5 rounded-xl bg-amber-50 text-amber-700">
-            <i data-lucide="building" class="w-4 h-4"></i>
-          </div>
-          <h2 class="text-xs font-bold uppercase tracking-wider text-slate-700">Casas e Inspección (Roedores)</h2>
-        </div>
-
-        <div class="grid grid-cols-2 gap-3">
-          <div>
-            <label class="block text-xs font-semibold text-slate-600 mb-1">Nro. Casas Insp.</label>
-            <input type="number" id="roedores_casas_insp" value="0"
-              class="w-full px-3 py-2 text-sm bg-slate-50/80 border border-slate-200 rounded-xl text-center font-bold text-slate-700">
-          </div>
-          <div>
-            <label class="block text-xs font-semibold text-slate-600 mb-1">Nro. Tratamiento</label>
-            <input type="number" id="roedores_tratamiento" value="0"
-              class="w-full px-3 py-2 text-sm bg-slate-50/80 border border-slate-200 rounded-xl text-center font-bold text-slate-700">
-          </div>
-        </div>
-      </div>
-
-      <!-- CARD 4: CRIADEROS (Aedes) -->
-      <div id="section-criaderos" class="bg-white rounded-2xl p-4 shadow-sm border border-slate-200/80 space-y-3">
-        <div class="flex items-center space-x-2.5 border-b border-slate-100 pb-2.5">
-          <div class="p-1.5 rounded-xl bg-cyan-50 text-cyan-700">
-            <i data-lucide="droplet" class="w-4 h-4"></i>
-          </div>
-          <h2 class="text-xs font-bold uppercase tracking-wider text-slate-700">Criaderos</h2>
-        </div>
-
-        <div class="grid grid-cols-2 gap-2.5">
-          <div>
-            <label class="block text-[19px] font-semibold text-slate-500 mb-1">Tratados</label>
-            <input type="number" id="criaderos_tratados" value="0"
-              class="w-full px-3 py-2 text-sm bg-slate-50/80 border border-slate-200 rounded-xl text-center font-bold text-slate-700">
-          </div>
-          <div>
-            <label class="block text-[19px] font-semibold text-slate-500 mb-1">Eliminados</label>
-            <input type="number" id="criaderos_eliminados" value="0"
-              class="w-full px-3 py-2 text-sm bg-slate-50/80 border border-slate-200 rounded-xl text-center font-bold text-slate-700">
-          </div>
-          <div>
-            <label class="block text-[19px] font-semibold text-slate-500 mb-1">Inspeccionados</label>
-            <input type="number" id="criaderos_inspeccionados" value="0"
-              class="w-full px-3 py-2 text-sm bg-slate-50/80 border border-slate-200 rounded-xl text-center font-bold text-slate-700">
-          </div>
-          <div>
-            <label class="block text-[19px] font-semibold text-slate-500 mb-1">Positivos</label>
-            <input type="number" id="criaderos_positivos" value="0"
-              class="w-full px-3 py-2 text-sm bg-slate-50/80 border border-slate-200 rounded-xl text-center font-bold text-red-600">
-          </div>
-        </div>
-      </div>
-
-      <!-- CARD 5: DEPÓSITOS Y CRIADEROS DETALLADOS -->
-      <div id="section-depositos" class="bg-white rounded-2xl p-4 shadow-sm border border-slate-200/80 space-y-3">
-        <div class="flex items-center justify-between border-b border-slate-100 pb-2.5">
-          <div class="flex items-center space-x-2.5">
-            <div class="p-1.5 rounded-xl bg-purple-50 text-purple-700">
-              <i data-lucide="boxes" class="w-4 h-4"></i>
-            </div>
-            <h2 class="text-xs font-bold uppercase tracking-wider text-slate-700">Depósitos y Criaderos</h2>
-          </div>
-          <span class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Cant | Positivos (+)</span>
-        </div>
-
-        <div class="space-y-2">
-          <!-- Tanques -->
-          <div class="flex items-center justify-between gap-2">
-            <span class="text-xs font-bold text-slate-700 w-20">Tanques</span>
-            <div class="flex items-center space-x-2 flex-1">
-              <input type="number" id="dep_tanques" value="0" placeholder="Cant"
-                class="w-full px-2.5 py-1.5 text-sm bg-slate-50/80 border border-slate-200 rounded-xl text-center font-bold">
-              <input type="number" id="dep_tanques_pos" value="0" placeholder="+"
-                class="w-full px-2.5 py-1.5 text-sm bg-red-50/70 border border-red-200 rounded-xl text-center font-bold text-red-600">
-            </div>
-          </div>
-          <!-- Barriles -->
-          <div class="flex items-center justify-between gap-2">
-            <span class="text-xs font-bold text-slate-700 w-20">Barriles</span>
-            <div class="flex items-center space-x-2 flex-1">
-              <input type="number" id="dep_barriles" value="0" placeholder="Cant"
-                class="w-full px-2.5 py-1.5 text-sm bg-slate-50/80 border border-slate-200 rounded-xl text-center font-bold">
-              <input type="number" id="dep_barriles_pos" value="0" placeholder="+"
-                class="w-full px-2.5 py-1.5 text-sm bg-red-50/70 border border-red-200 rounded-xl text-center font-bold text-red-600">
-            </div>
-          </div>
-          <!-- Cauchos -->
-          <div class="flex items-center justify-between gap-2">
-            <span class="text-xs font-bold text-slate-700 w-20">Cauchos</span>
-            <div class="flex items-center space-x-2 flex-1">
-              <input type="number" id="dep_cauchos" value="0" placeholder="Cant"
-                class="w-full px-2.5 py-1.5 text-sm bg-slate-50/80 border border-slate-200 rounded-xl text-center font-bold">
-              <input type="number" id="dep_cauchos_pos" value="0" placeholder="+"
-                class="w-full px-2.5 py-1.5 text-sm bg-red-50/70 border border-red-200 rounded-xl text-center font-bold text-red-600">
-            </div>
-          </div>
-          <!-- Materos -->
-          <div class="flex items-center justify-between gap-2">
-            <span class="text-xs font-bold text-slate-700 w-20">Materos</span>
-            <div class="flex items-center space-x-2 flex-1">
-              <input type="number" id="dep_materos" value="0" placeholder="Cant"
-                class="w-full px-2.5 py-1.5 text-sm bg-slate-50/80 border border-slate-200 rounded-xl text-center font-bold">
-              <input type="number" id="dep_materos_pos" value="0" placeholder="+"
-                class="w-full px-2.5 py-1.5 text-sm bg-red-50/70 border border-red-200 rounded-xl text-center font-bold text-red-600">
-            </div>
-          </div>
-          <!-- Diversos -->
-          <div class="flex items-center justify-between gap-2">
-            <span class="text-xs font-bold text-slate-700 w-20">Diversos</span>
-            <div class="flex items-center space-x-2 flex-1">
-              <input type="number" id="dep_diversos" value="0" placeholder="Cant"
-                class="w-full px-2.5 py-1.5 text-sm bg-slate-50/80 border border-slate-200 rounded-xl text-center font-bold">
-              <input type="number" id="dep_diversos_pos" value="0" placeholder="+"
-                class="w-full px-2.5 py-1.5 text-sm bg-red-50/70 border border-red-200 rounded-xl text-center font-bold text-red-600">
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- CARD 6: INSUMOS Y HABITANTES -->
-      <div class="bg-white rounded-2xl p-4 shadow-sm border border-slate-200/80 space-y-3">
-        <div class="flex items-center space-x-2.5 border-b border-slate-100 pb-2.5">
-          <div class="p-1.5 rounded-xl bg-amber-50 text-amber-700">
-            <i data-lucide="flask-conical" class="w-4 h-4"></i>
-          </div>
-          <h2 class="text-xs font-bold uppercase tracking-wider text-slate-700">Insumos y Cobertura</h2>
-        </div>
-
-        <div id="insumos-aedes" class="space-y-3">
-          <div>
-            <label class="block text-xs font-semibold text-slate-600 mb-1">Gasto Abate</label>
-            <div class="flex space-x-2">
-              <input type="number" id="gasto_abate" value="0" step="0.1"
-                class="flex-1 px-3 py-2 text-sm bg-slate-50/80 border border-slate-200 rounded-xl font-bold">
-              <select id="unidad_abate"
-                class="w-28 px-2 py-2 text-xs bg-slate-50/80 border border-slate-200 rounded-xl font-bold text-slate-700">
-                <option value="Gramos">Gramos</option>
-                <option value="Kilos">Kilos</option>
-              </select>
-            </div>
-          </div>
-
-          <div>
-            <label class="block text-xs font-semibold text-slate-600 mb-1">Gasto Insecticida</label>
-            <div class="flex space-x-2">
-              <input type="number" id="gasto_insecticida" value="0" step="0.1"
-                class="flex-1 px-3 py-2 text-sm bg-slate-50/80 border border-slate-200 rounded-xl font-bold">
-              <select id="unidad_insecticida"
-                class="w-28 px-2 py-2 text-xs bg-slate-50/80 border border-slate-200 rounded-xl font-bold text-slate-700">
-                <option value="Litros">Litros</option>
-                <option value="Mililitros">Mililitros</option>
-              </select>
-            </div>
-          </div>
-        </div>
-
-        <div id="insumos-roedores" class="hidden space-y-3">
-          <div>
-            <label class="block text-xs font-semibold text-slate-600 mb-1">Gasto Rodenticida</label>
-            <div class="flex space-x-2">
-              <input type="number" id="gasto_rodenticida" value="0" step="0.1"
-                class="flex-1 px-3 py-2 text-sm bg-slate-50/80 border border-slate-200 rounded-xl font-bold">
-              <select id="unidad_rodenticida"
-                class="w-28 px-2 py-2 text-xs bg-slate-50/80 border border-slate-200 rounded-xl font-bold text-slate-700">
-                <option value="Gramos">Gramos</option>
-                <option value="Kilos">Kilos</option>
-              </select>
-            </div>
-          </div>
-        </div>
-
-        <div>
-          <label class="block text-xs font-semibold text-slate-600 mb-1">Habitantes Protegidos</label>
-          <input type="number" id="hab_protegidos" value="0"
-            class="w-full px-3 py-2 text-sm bg-slate-50/80 border border-slate-200 rounded-xl font-bold">
-        </div>
-      </div>
-
-    </form>
-  </main>
-
-  <!-- BOTÓN FLOTANTE INFERIOR PARA ENVIAR -->
-  <div
-    class="fixed bottom-0 left-0 right-0 p-3 bg-white/90 backdrop-blur-md border-t border-slate-200/80 z-40 shadow-lg">
-    <div class="max-w-md mx-auto">
-      <button type="button" onclick="openRecipientModal()"
-        class="w-full py-3.5 px-4 bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white font-bold text-sm rounded-xl shadow-lg shadow-emerald-600/30 flex items-center justify-center gap-2 transition-all">
-        <i data-lucide="send" class="w-5 h-5"></i> Enviar Reporte por WhatsApp
-      </button>
+  <!-- Banner Alerta de Celdas Faltantes -->
+  <div id="missing-alert"
+    class="hidden bg-amber-50/90 border border-amber-200/80 rounded-2xl p-3.5 text-xs text-amber-900 flex items-start space-x-3 shadow-sm">
+    <i data-lucide="alert-circle" class="w-5 h-5 text-amber-600 shrink-0 mt-0.5"></i>
+    <div class="flex-1">
+      <p class="font-bold mb-0.5 text-amber-900 text-sm">Campos pendientes por completar</p>
+      <p id="missing-fields-list" class="text-amber-700 leading-relaxed text-xs"></p>
+      <p class="mt-1 text-[11px] text-amber-600 font-medium italic">Nota: Puede proceder con el envío aunque existan
+        campos vacíos.</p>
     </div>
   </div>
 
-  <!-- MODAL / DIÁLOGO DE SELECCIÓN DE DESTINATARIO -->
-  <div id="modal-recipients"
-    class="hidden fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-end sm:items-center justify-center p-4">
-    <div class="bg-white w-full max-w-md rounded-2xl p-5 space-y-4 shadow-2xl border border-slate-100 animate-fade-in">
-      <div class="flex items-center justify-between border-b border-slate-100 pb-3">
-        <div class="flex items-center gap-2.5">
-          <div class="p-2 rounded-xl bg-emerald-50 text-emerald-700">
-            <i data-lucide="users" class="w-5 h-5"></i>
-          </div>
-          <div>
-            <h3 class="text-sm font-bold text-slate-800">Seleccionar Destinatario</h3>
-            <p class="text-xs text-slate-500">Elija el contacto a quien enviará el reporte</p>
-          </div>
-        </div>
-        <button type="button" onclick="closeRecipientModal()" class="text-slate-400 hover:text-slate-600 p-1">
-          <i data-lucide="x" class="w-5 h-5"></i>
-        </button>
-      </div>
-
-      <!-- Opciones de Contactos Fijos -->
-      <div class="space-y-2.5" id="recipients-list">
-        <!-- Generado dinámicamente en JS -->
-      </div>
-
-      <button type="button" onclick="closeRecipientModal()"
-        class="w-full py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs rounded-xl transition-all">
-        Cancelar
-      </button>
-    </div>
+  <!-- Selector de Programa Principal (Aedes vs Roedores) -->
+  <div class="grid grid-cols-2 gap-2 bg-slate-200/80 p-1.5 rounded-2xl shadow-inner">
+    <button type="button" id="tab-aedes" onclick="setProgram('aedes')"
+      class="py-3 px-3 rounded-xl font-bold text-sm flex items-center justify-center gap-2 transition-all duration-200 shadow-sm bg-white text-blue-900">
+      <i data-lucide="bug" class="w-4 h-4 text-blue-600"></i> Programa Aedes
+    </button>
+    <button type="button" id="tab-roedores" onclick="setProgram('roedores')"
+      class="py-3 px-3 rounded-xl font-semibold text-sm flex items-center justify-center gap-2 transition-all duration-200 text-slate-600 hover:text-slate-900">
+      <i data-lucide="rat" class="w-4 h-4 text-amber-600"></i> Control Roedores
+    </button>
   </div>
 
-  <script>
-    /* ===================================================================
-     * MAPAS DE RESPONSABLES POR MUNICIPIO (AEDES Y ROEDORES)
-     * =================================================================== */
-    const RESPONSABLES_AEDES = {
-      "San Fernando": "Lcda. Kalis Herrera",
-      "Biruaca": "Insp. Esther Abad",
-      "Achaguas": "Edgar Acevedo",
-      "Pedro Camejo": "Insp César Rodríguez",
-      "Romulo Gallego": "Yuver Coa",
-      "Paez": "Richard Páez",
-      "Muñoz": "Lcdo. Rafael Rodríguez"
-    };
+  <!-- Sub-selector Aedes (Abordaje / Tratamiento Focal) -->
+  <div id="sub-aedes-container"
+    class="grid grid-cols-2 gap-2 bg-blue-50/80 p-1.5 rounded-2xl border border-blue-100 shadow-sm">
+    <button type="button" id="subtab-abordaje" onclick="setAedesType('abordaje')"
+      class="py-2.5 px-3 rounded-xl text-xs font-bold text-center transition-all bg-blue-700 text-white shadow-sm">
+      Abordaje Comunitario
+    </button>
+    <button type="button" id="subtab-focal" onclick="setAedesType('focal')"
+      class="py-2.5 px-3 rounded-xl text-xs font-semibold text-center transition-all text-slate-600 hover:bg-white/50">
+      Tratamiento Focal
+    </button>
+  </div>
 
-    const RESPONSABLES_ROEDORES = {
-      "San Fernando": "Insp. Liliana Correa",
-      "Biruaca": "Insp. Esther Abad",
-      "Achaguas": "Edgar Acevedo",
-      "Pedro Camejo": "Insp César Rodríguez",
-      "Romulo Gallego": "Yuver Coa",
-      "Paez": "Richard Páez",
-      "Muñoz": "Lcdo. Rafael Rodríguez"
-    };
+  <!-- FORMULARIO GENERAL -->
+  <form id="reportForm" oninput="checkMissingFields()" onchange="checkMissingFields()" class="space-y-4">
 
-    const CONFIG_DESTINATARIOS = [
-      { id: 1, nombre: "Sala situacional, San Fernando de Apure", numero: "584124608107", cargo: "Maria Eugenia Garrido" },
-      { id: 2, nombre: "Sala situacional, San Fernando de Apure", numero: "584243753877", cargo: "Gerson Jesus Solano" }
+    <!-- CARD 1: DATOS GENERALES Y UBICACIÓN -->
+    <div class="bg-white rounded-2xl p-4 shadow-sm border border-slate-200/80 space-y-3">
+      <div class="flex items-center space-x-2.5 border-b border-slate-100 pb-2.5">
+        <div class="p-1.5 rounded-xl bg-blue-50 text-blue-700">
+          <i data-lucide="map-pin" class="w-4 h-4"></i>
+        </div>
+        <h2 class="text-sm font-bold uppercase tracking-wider text-slate-700">Ubicación y Fecha</h2>
+      </div>
+
+      <div>
+        <label class="block text-xs font-semibold text-slate-600 mb-1">Fecha del Reporte</label>
+        <div class="grid grid-cols-3 gap-2">
+          <input type="number" id="fecha_dia" placeholder="Día" min="1" max="31"
+            class="data-field w-full px-3 py-2.5 text-base bg-slate-50/80 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:bg-white text-center font-semibold"
+            data-label="Día">
+          <input type="number" id="fecha_mes" placeholder="Mes" min="1" max="12"
+            class="data-field w-full px-3 py-2.5 text-base bg-slate-50/80 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:bg-white text-center font-semibold"
+            data-label="Mes">
+          <input type="number" id="fecha_ano" placeholder="Año" readonly
+            class="w-full px-3 py-2.5 text-base bg-slate-100 border border-slate-200 rounded-xl text-center text-slate-500 font-semibold">
+        </div>
+      </div>
+
+      <div>
+        <label for="municipio" class="block text-xs font-semibold text-slate-600 mb-1">Municipio</label>
+        <select id="municipio" onchange="autoSelectResponsable(); checkMissingFields();"
+          class="data-field w-full px-3 py-2.5 text-base bg-slate-50/80 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:bg-white font-semibold text-slate-700"
+          data-label="Municipio">
+          <option value="">-- Seleccionar Municipio --</option>
+          <option value="Achaguas">Achaguas</option>
+          <option value="San Fernando">San Fernando</option>
+          <option value="Biruaca">Biruaca</option>
+          <option value="Pedro Camejo">Pedro Camejo</option>
+          <option value="Romulo Gallego">Rómulo Gallegos</option>
+          <option value="Paez">Páez</option>
+          <option value="Muñoz">Muñoz</option>
+        </select>
+      </div>
+
+      <div class="grid grid-cols-2 gap-2">
+        <div>
+          <label for="parroquia" class="block text-xs font-semibold text-slate-600 mb-1">Parroquia</label>
+          <input type="text" id="parroquia" placeholder="Ej: El Recreo"
+            class="data-field w-full px-3 py-2.5 text-base bg-slate-50/80 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:bg-white font-medium"
+            data-label="Parroquia">
+        </div>
+        <div>
+          <label for="sector" class="block text-xs font-semibold text-slate-600 mb-1">Sector</label>
+          <input type="text" id="sector" placeholder="Ej: Los Limones"
+            class="data-field w-full px-3 py-2.5 text-base bg-slate-50/80 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:bg-white font-medium"
+            data-label="Sector">
+        </div>
+      </div>
+
+      <div>
+        <label for="asic" class="block text-xs font-semibold text-slate-600 mb-1">ASIC</label>
+        <input type="text" id="asic" placeholder="Nombre de ASIC"
+          class="data-field w-full px-3 py-2.5 text-base bg-slate-50/80 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:bg-white font-medium"
+          data-label="ASIC">
+      </div>
+
+      <div class="pt-1">
+        <label class="block text-xs font-semibold text-slate-600 mb-1">Responsables Asignados</label>
+        <div class="space-y-1.5">
+          <input type="text" value="Epid. César Martínez" readonly
+            class="w-full px-3 py-2 text-sm bg-slate-100 border border-slate-200 rounded-xl text-slate-600 font-semibold">
+          <input type="text" value="Insp. Hugo Pérez" readonly
+            class="w-full px-3 py-2 text-sm bg-slate-100 border border-slate-200 rounded-xl text-slate-600 font-semibold">
+          <input type="text" id="responsable_local" placeholder="Responsable por Municipio (Automático)" readonly
+            class="w-full px-3 py-2.5 text-sm bg-blue-50/90 border border-blue-200 rounded-xl text-blue-900 font-bold shadow-inner">
+        </div>
+      </div>
+    </div>
+
+    <!-- CARD 2: TRATAMIENTO FOCAL - PACIENTES (Solo Tratamiento Focal) -->
+    <div id="section-pacientes" class="hidden bg-white rounded-2xl p-4 shadow-sm border border-slate-200/80 space-y-3">
+      <div class="flex items-center justify-between border-b border-slate-100 pb-2.5">
+        <div class="flex items-center space-x-2.5">
+          <div class="p-1.5 rounded-xl bg-indigo-50 text-indigo-700">
+            <i data-lucide="users" class="w-4 h-4"></i>
+          </div>
+          <h2 class="text-sm font-bold uppercase tracking-wider text-slate-700">Datos de Pacientes</h2>
+        </div>
+      </div>
+
+      <div id="pacientes-list" class="space-y-3">
+        <!-- Pacientes inyectados dinámicamente -->
+      </div>
+
+      <button type="button" onclick="addPacienteField()"
+        class="w-full py-3 px-3 border-2 border-dashed border-indigo-200 hover:border-indigo-400 bg-indigo-50/40 text-indigo-700 font-bold text-sm rounded-xl flex items-center justify-center gap-2 transition-all shadow-sm">
+        <i data-lucide="user-plus" class="w-4 h-4"></i> Añadir Otro Paciente
+      </button>
+    </div>
+
+    <!-- CARD 3: CASAS (Aedes) -->
+    <div id="section-casas" class="bg-white rounded-2xl p-4 shadow-sm border border-slate-200/80 space-y-3">
+      <div class="flex items-center space-x-2.5 border-b border-slate-100 pb-2.5">
+        <div class="p-1.5 rounded-xl bg-emerald-50 text-emerald-700">
+          <i data-lucide="home" class="w-4 h-4"></i>
+        </div>
+        <h2 class="text-sm font-bold uppercase tracking-wider text-slate-700">Inspección de Casas</h2>
+      </div>
+
+      <div class="grid grid-cols-2 gap-2.5">
+        <div>
+          <label class="block text-xs font-semibold text-slate-500 mb-1">Visitadas</label>
+          <input type="number" id="casas_visitadas" value="0"
+            class="w-full px-3 py-2.5 text-base bg-slate-50/80 border border-slate-200 rounded-xl text-center font-bold text-slate-700">
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-slate-500 mb-1">Inspeccionadas</label>
+          <input type="number" id="casas_inspeccionadas" value="0"
+            class="w-full px-3 py-2.5 text-base bg-slate-50/80 border border-slate-200 rounded-xl text-center font-bold text-slate-700">
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-slate-500 mb-1">Positivas</label>
+          <input type="number" id="casas_positivas" value="0"
+            class="w-full px-3 py-2.5 text-base bg-slate-50/80 border border-slate-200 rounded-xl text-center font-bold text-red-600">
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-slate-500 mb-1">Ausentes</label>
+          <input type="number" id="casas_ausentes" value="0"
+            class="w-full px-3 py-2.5 text-base bg-slate-50/80 border border-slate-200 rounded-xl text-center font-bold text-slate-700">
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-slate-500 mb-1">Renuentes</label>
+          <input type="number" id="casas_renuentes" value="0"
+            class="w-full px-3 py-2.5 text-base bg-slate-50/80 border border-slate-200 rounded-xl text-center font-bold text-slate-700">
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-slate-500 mb-1">Tratadas</label>
+          <input type="number" id="casas_tratadas" value="0"
+            class="w-full px-3 py-2.5 text-base bg-slate-50/80 border border-slate-200 rounded-xl text-center font-bold text-slate-700">
+        </div>
+      </div>
+      <div>
+        <label class="block text-xs font-semibold text-slate-500 mb-1">Fumigadas</label>
+        <input type="number" id="casas_fumigadas" value="0"
+          class="w-full px-3 py-2.5 text-base bg-slate-50/80 border border-slate-200 rounded-xl text-center font-bold text-slate-700">
+      </div>
+    </div>
+
+    <!-- CARD 3B: CASAS (Roedores) -->
+    <div id="section-casas-roedores"
+      class="hidden bg-white rounded-2xl p-4 shadow-sm border border-slate-200/80 space-y-3">
+      <div class="flex items-center space-x-2.5 border-b border-slate-100 pb-2.5">
+        <div class="p-1.5 rounded-xl bg-amber-50 text-amber-700">
+          <i data-lucide="building" class="w-4 h-4"></i>
+        </div>
+        <h2 class="text-sm font-bold uppercase tracking-wider text-slate-700">Casas e Inspección (Roedores)</h2>
+      </div>
+
+      <div class="grid grid-cols-2 gap-3">
+        <div>
+          <label class="block text-xs font-semibold text-slate-600 mb-1">Nro. Casas Insp.</label>
+          <input type="number" id="roedores_casas_insp" value="0"
+            class="w-full px-3 py-2.5 text-base bg-slate-50/80 border border-slate-200 rounded-xl text-center font-bold text-slate-700">
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-slate-600 mb-1">Nro. Tratamiento</label>
+          <input type="number" id="roedores_tratamiento" value="0"
+            class="w-full px-3 py-2.5 text-base bg-slate-50/80 border border-slate-200 rounded-xl text-center font-bold text-slate-700">
+        </div>
+      </div>
+    </div>
+
+    <!-- CARD 4: CRIADEROS (Aedes) -->
+    <div id="section-criaderos" class="bg-white rounded-2xl p-4 shadow-sm border border-slate-200/80 space-y-3">
+      <div class="flex items-center space-x-2.5 border-b border-slate-100 pb-2.5">
+        <div class="p-1.5 rounded-xl bg-cyan-50 text-cyan-700">
+          <i data-lucide="droplet" class="w-4 h-4"></i>
+        </div>
+        <h2 class="text-sm font-bold uppercase tracking-wider text-slate-700">Criaderos</h2>
+      </div>
+
+      <div class="grid grid-cols-2 gap-2.5">
+        <div>
+          <label class="block text-xs font-semibold text-slate-500 mb-1">Tratados</label>
+          <input type="number" id="criaderos_tratados" value="0"
+            class="w-full px-3 py-2.5 text-base bg-slate-50/80 border border-slate-200 rounded-xl text-center font-bold text-slate-700">
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-slate-500 mb-1">Eliminados</label>
+          <input type="number" id="criaderos_eliminados" value="0"
+            class="w-full px-3 py-2.5 text-base bg-slate-50/80 border border-slate-200 rounded-xl text-center font-bold text-slate-700">
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-slate-500 mb-1">Inspeccionados</label>
+          <input type="number" id="criaderos_inspeccionados" value="0"
+            class="w-full px-3 py-2.5 text-base bg-slate-50/80 border border-slate-200 rounded-xl text-center font-bold text-slate-700">
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-slate-500 mb-1">Positivos</label>
+          <input type="number" id="criaderos_positivos" value="0"
+            class="w-full px-3 py-2.5 text-base bg-slate-50/80 border border-slate-200 rounded-xl text-center font-bold text-red-600">
+        </div>
+      </div>
+    </div>
+
+    <!-- CARD 5: DEPÓSITOS Y CRIADEROS DETALLADOS -->
+    <div id="section-depositos" class="bg-white rounded-2xl p-4 shadow-sm border border-slate-200/80 space-y-3">
+      <div class="flex items-center justify-between border-b border-slate-100 pb-2.5">
+        <div class="flex items-center space-x-2.5">
+          <div class="p-1.5 rounded-xl bg-purple-50 text-purple-700">
+            <i data-lucide="boxes" class="w-4 h-4"></i>
+          </div>
+          <h2 class="text-sm font-bold uppercase tracking-wider text-slate-700">Depósitos y Criaderos</h2>
+        </div>
+        <span class="text-[11px] text-slate-400 font-bold uppercase tracking-wider">Cant | Positivos (+)</span>
+      </div>
+
+      <div class="space-y-2.5">
+        <!-- Tanques -->
+        <div class="flex items-center justify-between gap-2">
+          <span class="text-sm font-bold text-slate-700 w-24">Tanques</span>
+          <div class="flex items-center space-x-2 flex-1">
+            <input type="number" id="dep_tanques" value="0" placeholder="Cant"
+              class="w-full px-2.5 py-2 text-base bg-slate-50/80 border border-slate-200 rounded-xl text-center font-bold">
+            <input type="number" id="dep_tanques_pos" value="0" placeholder="+"
+              class="w-full px-2.5 py-2 text-base bg-red-50/70 border border-red-200 rounded-xl text-center font-bold text-red-600">
+          </div>
+        </div>
+        <!-- Barriles -->
+        <div class="flex items-center justify-between gap-2">
+          <span class="text-sm font-bold text-slate-700 w-24">Barriles</span>
+          <div class="flex items-center space-x-2 flex-1">
+            <input type="number" id="dep_barriles" value="0" placeholder="Cant"
+              class="w-full px-2.5 py-2 text-base bg-slate-50/80 border border-slate-200 rounded-xl text-center font-bold">
+            <input type="number" id="dep_barriles_pos" value="0" placeholder="+"
+              class="w-full px-2.5 py-2 text-base bg-red-50/70 border border-red-200 rounded-xl text-center font-bold text-red-600">
+          </div>
+        </div>
+        <!-- Cauchos -->
+        <div class="flex items-center justify-between gap-2">
+          <span class="text-sm font-bold text-slate-700 w-24">Cauchos</span>
+          <div class="flex items-center space-x-2 flex-1">
+            <input type="number" id="dep_cauchos" value="0" placeholder="Cant"
+              class="w-full px-2.5 py-2 text-base bg-slate-50/80 border border-slate-200 rounded-xl text-center font-bold">
+            <input type="number" id="dep_cauchos_pos" value="0" placeholder="+"
+              class="w-full px-2.5 py-2 text-base bg-red-50/70 border border-red-200 rounded-xl text-center font-bold text-red-600">
+          </div>
+        </div>
+        <!-- Materos -->
+        <div class="flex items-center justify-between gap-2">
+          <span class="text-sm font-bold text-slate-700 w-24">Materos</span>
+          <div class="flex items-center space-x-2 flex-1">
+            <input type="number" id="dep_materos" value="0" placeholder="Cant"
+              class="w-full px-2.5 py-2 text-base bg-slate-50/80 border border-slate-200 rounded-xl text-center font-bold">
+            <input type="number" id="dep_materos_pos" value="0" placeholder="+"
+              class="w-full px-2.5 py-2 text-base bg-red-50/70 border border-red-200 rounded-xl text-center font-bold text-red-600">
+          </div>
+        </div>
+        <!-- Diversos -->
+        <div class="flex items-center justify-between gap-2">
+          <span class="text-sm font-bold text-slate-700 w-24">Diversos</span>
+          <div class="flex items-center space-x-2 flex-1">
+            <input type="number" id="dep_diversos" value="0" placeholder="Cant"
+              class="w-full px-2.5 py-2 text-base bg-slate-50/80 border border-slate-200 rounded-xl text-center font-bold">
+            <input type="number" id="dep_diversos_pos" value="0" placeholder="+"
+              class="w-full px-2.5 py-2 text-base bg-red-50/70 border border-red-200 rounded-xl text-center font-bold text-red-600">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CARD 6: INSUMOS Y HABITANTES -->
+    <div class="bg-white rounded-2xl p-4 shadow-sm border border-slate-200/80 space-y-3">
+      <div class="flex items-center space-x-2.5 border-b border-slate-100 pb-2.5">
+        <div class="p-1.5 rounded-xl bg-amber-50 text-amber-700">
+          <i data-lucide="flask-conical" class="w-4 h-4"></i>
+        </div>
+        <h2 class="text-sm font-bold uppercase tracking-wider text-slate-700">Insumos y Cobertura</h2>
+      </div>
+
+      <div id="insumos-aedes" class="space-y-3">
+        <div>
+          <label class="block text-xs font-semibold text-slate-600 mb-1">Gasto Abate</label>
+          <div class="flex space-x-2">
+            <input type="number" id="gasto_abate" value="0" step="0.1"
+              class="flex-1 px-3 py-2.5 text-base bg-slate-50/80 border border-slate-200 rounded-xl font-bold">
+            <select id="unidad_abate"
+              class="w-32 px-2 py-2.5 text-sm bg-slate-50/80 border border-slate-200 rounded-xl font-bold text-slate-700">
+              <option value="Gramos">Gramos</option>
+              <option value="Kilos">Kilos</option>
+            </select>
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-slate-600 mb-1">Gasto Insecticida</label>
+          <div class="flex space-x-2">
+            <input type="number" id="gasto_insecticida" value="0" step="0.1"
+              class="flex-1 px-3 py-2.5 text-base bg-slate-50/80 border border-slate-200 rounded-xl font-bold">
+            <select id="unidad_insecticida"
+              class="w-32 px-2 py-2.5 text-sm bg-slate-50/80 border border-slate-200 rounded-xl font-bold text-slate-700">
+              <option value="Litros">Litros</option>
+              <option value="Mililitros">Mililitros</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div id="insumos-roedores" class="hidden space-y-3">
+        <div>
+          <label class="block text-xs font-semibold text-slate-600 mb-1">Gasto Rodenticida</label>
+          <div class="flex space-x-2">
+            <input type="number" id="gasto_rodenticida" value="0" step="0.1"
+              class="flex-1 px-3 py-2.5 text-base bg-slate-50/80 border border-slate-200 rounded-xl font-bold">
+            <select id="unidad_rodenticida"
+              class="w-32 px-2 py-2.5 text-sm bg-slate-50/80 border border-slate-200 rounded-xl font-bold text-slate-700">
+              <option value="Gramos">Gramos</option>
+              <option value="Kilos">Kilos</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <label class="block text-xs font-semibold text-slate-600 mb-1">Habitantes Protegidos</label>
+        <input type="number" id="hab_protegidos" value="0"
+          class="w-full px-3 py-2.5 text-base bg-slate-50/80 border border-slate-200 rounded-xl font-bold">
+      </div>
+    </div>
+
+  </form>
+</main>
+
+<!-- BOTÓN FLOTANTE INFERIOR PARA ENVIAR -->
+<div class="fixed bottom-0 left-0 right-0 p-3 bg-white/90 backdrop-blur-md border-t border-slate-200/80 z-40 shadow-lg">
+  <div class="max-w-md mx-auto">
+    <button type="button" onclick="openRecipientModal()"
+      class="w-full py-3.5 px-4 bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white font-bold text-base rounded-xl shadow-lg shadow-emerald-600/30 flex items-center justify-center gap-2 transition-all">
+      <i data-lucide="send" class="w-5 h-5"></i> Enviar Reporte por WhatsApp
+    </button>
+  </div>
+</div>
+
+<!-- MODAL / DIÁLOGO DE SELECCIÓN DE DESTINATARIO -->
+<div id="modal-recipients"
+  class="hidden fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-end sm:items-center justify-center p-4">
+  <div class="bg-white w-full max-w-md rounded-2xl p-5 space-y-4 shadow-2xl border border-slate-100 animate-fade-in">
+    <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+      <div class="flex items-center gap-2.5">
+        <div class="p-2 rounded-xl bg-emerald-50 text-emerald-700">
+          <i data-lucide="users" class="w-5 h-5"></i>
+        </div>
+        <div>
+          <h3 class="text-base font-bold text-slate-800">Seleccionar Destinatario</h3>
+          <p class="text-xs text-slate-500">Elija el contacto a quien enviará el reporte</p>
+        </div>
+      </div>
+      <button type="button" onclick="closeRecipientModal()" class="text-slate-400 hover:text-slate-600 p-1">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+    </div>
+
+    <!-- Opciones de Contactos Fijos -->
+    <div class="space-y-2.5" id="recipients-list">
+      <!-- Generado dinámicamente en JS -->
+    </div>
+
+    <button type="button" onclick="closeRecipientModal()"
+      class="w-full py-3 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-sm rounded-xl transition-all">
+      Cancelar
+    </button>
+  </div>
+</div>
+
+<script>
+  /* ===================================================================
+   * LÓGICA DEL MOSQUITO CÓMICO (VUELO ORGÁNICO E INTERACCIÓN)
+   * =================================================================== */
+  (function initMosquito() {
+    const mosquito = document.getElementById('mosquito-actor');
+    const speech = document.getElementById('mosquito-speech');
+    if (!mosquito || !speech) return;
+
+    const frasesComicas = [
+      "¡Bzzzz! ¡No me echen Abate!",
+      "¡Cuidado que vengo de un caucho!",
+      "¡A mí no me atrapan hoy!",
+      "¡Puro Apure, compadre!",
+      "¡Zzzzz! ¡Abate no, por favor!",
+      "¡Ese tanque está tapado, qué aburrido!",
+      "¡Sálvese quien pueda, llegó Salud Ambiental!"
     ];
 
-    // Variables de Estado Globales
-    let currentProgram = 'aedes';
-    let currentAedesType = 'abordaje';
+    let x = window.innerWidth * 0.7;
+    let y = window.innerHeight * 0.25;
+    let targetX = Math.random() * (window.innerWidth - 60) + 10;
+    let targetY = Math.random() * (window.innerHeight - 140) + 40;
+    let angle = 0;
+    let speed = 2.4;
+    let isEscaping = false;
+    let speechTimeout = null;
 
-    // Inicialización al cargar la ventana
-    document.addEventListener('DOMContentLoaded', () => {
-      if (window.lucide) {
-        lucide.createIcons();
-      }
-      resetFormDates();
-      addPacienteField();
-      renderRecipients();
-      checkMissingFields();
-    });
-
-    function resetFormDates() {
-      const today = new Date();
-      document.getElementById('fecha_dia').value = today.getDate();
-      document.getElementById('fecha_mes').value = today.getMonth() + 1;
-      document.getElementById('fecha_ano').value = today.getFullYear();
+    function saySomething(customText) {
+      const text = customText || frasesComicas[Math.floor(Math.random() * frasesComicas.length)];
+      speech.textContent = text;
+      speech.style.opacity = '1';
+      clearTimeout(speechTimeout);
+      speechTimeout = setTimeout(() => {
+        speech.style.opacity = '0';
+      }, 2400);
     }
 
-    // Relleno automático de responsable según el Municipio y Programa actual
-    function autoSelectResponsable() {
-      const muniSelect = document.getElementById('municipio');
-      const respInput = document.getElementById('responsable_local');
-      const selectedVal = muniSelect.value;
-
-      const mapaActual = (currentProgram === 'roedores') ? RESPONSABLES_ROEDORES : RESPONSABLES_AEDES;
-
-      if (selectedVal && mapaActual[selectedVal]) {
-        respInput.value = mapaActual[selectedVal];
-      } else {
-        respInput.value = '';
-      }
-    }
-
-    // Sistema de Notificación Toast
-    function showToast(title, message, isSuccess = true) {
-      const toast = document.getElementById('custom-toast');
-      document.getElementById('toast-title').innerText = title;
-      document.getElementById('toast-message').innerText = message;
-
-      const iconContainer = document.getElementById('toast-icon');
-      if (isSuccess) {
-        iconContainer.className = "p-1.5 rounded-xl bg-emerald-500/20 text-emerald-400";
-        iconContainer.innerHTML = '<i data-lucide="check-circle-2" class="w-5 h-5"></i>';
-      } else {
-        iconContainer.className = "p-1.5 rounded-xl bg-amber-500/20 text-amber-400";
-        iconContainer.innerHTML = '<i data-lucide="alert-circle" class="w-5 h-5"></i>';
-      }
-      if (window.lucide) {
-        lucide.createIcons();
-      }
-      toast.classList.remove('hidden');
-
+    // Al tocar o hacer clic al mosquito, huye rápido y suelta una frase
+    function scareMosquito(e) {
+      e.stopPropagation();
+      isEscaping = true;
+      speed = 4.5;
+      targetX = (x > window.innerWidth / 2) ? 30 : window.innerWidth - 70;
+      targetY = (y > window.innerHeight / 2) ? 60 : window.innerHeight - 150;
+      saySomething("¡Ay! ¡Me van a fumigar! ¡Bzzzz!");
       setTimeout(() => {
-        hideToast();
-      }, 5000);
+        isEscaping = false;
+        speed = 1.4;
+      }, 900);
     }
 
-    function hideToast() {
-      document.getElementById('custom-toast').classList.add('hidden');
+    mosquito.addEventListener('click', scareMosquito);
+    mosquito.addEventListener('touchstart', scareMosquito, { passive: true });
+
+    // Frase aleatoria ocasional mientras revolotea
+    setInterval(() => {
+      if (!isEscaping && Math.random() < 0.45) {
+        saySomething();
+      }
+    }, 9000);
+
+    function flyLoop() {
+      const dx = targetX - x;
+      const dy = targetY - y;
+      const dist = Math.hypot(dx, dy);
+
+      // Elegir nuevo destino aleatorio al acercarse
+      if (dist < 25) {
+        targetX = Math.random() * (window.innerWidth - 65) + 15;
+        targetY = Math.random() * (window.innerHeight - 150) + 50;
+      }
+
+      // Movimiento con zig-zag errático típico de mosquito
+      const jitterX = (Math.random() - 0.5) * 3.2;
+      const jitterY = (Math.random() - 0.5) * 3.2;
+
+      const moveAngle = Math.atan2(dy, dx);
+      x += Math.cos(moveAngle) * speed + jitterX;
+      y += Math.sin(moveAngle) * speed + jitterY;
+
+      // Mantener dentro de los bordes visibles de la pantalla
+      x = Math.max(8, Math.min(window.innerWidth - 56, x));
+      y = Math.max(8, Math.min(window.innerHeight - 80, y));
+
+      // Orientar la cabeza del mosquito hacia donde vuela
+      const targetDeg = (moveAngle * 180 / Math.PI) + 90;
+      angle += (targetDeg - angle) * 0.15;
+
+      mosquito.style.transform = `translate3d(${x}px, ${y}px, 0) rotate(${angle}deg)`;
+
+      // Posicionar el globo de texto cerca del mosquito sin salirse de pantalla
+      const speechX = Math.max(10, Math.min(window.innerWidth - 210, x - 60));
+      const speechY = (y > 65) ? (y - 28) : (y + 52);
+      speech.style.transform = `translate3d(${speechX}px, ${speechY}px, 0)`;
+
+      requestAnimationFrame(flyLoop);
     }
 
-    // Modal de Destinatarios
-    function openRecipientModal() {
-      document.getElementById('modal-recipients').classList.remove('hidden');
+    // Saludar brevemente al abrir la página
+    setTimeout(() => saySomething("¡Bzzzz! ¡Bienvenido al reporte!"), 1200);
+    requestAnimationFrame(flyLoop);
+  })();
+
+  /* ===================================================================
+   * MAPAS DE RESPONSABLES POR MUNICIPIO (AEDES Y ROEDORES)
+   * =================================================================== */
+  const RESPONSABLES_AEDES = {
+    "San Fernando": "Lcda. Kalis Herrera",
+    "Biruaca": "Insp. Esther Abad",
+    "Achaguas": "Edgar Acevedo",
+    "Pedro Camejo": "Insp César Rodríguez",
+    "Romulo Gallego": "Yuver Coa",
+    "Paez": "Richard Páez",
+    "Muñoz": "Lcdo. Rafael Rodríguez"
+  };
+
+  const RESPONSABLES_ROEDORES = {
+    "San Fernando": "Insp. Liliana Correa",
+    "Biruaca": "Insp. Esther Abad",
+    "Achaguas": "Edgar Acevedo",
+    "Pedro Camejo": "Insp César Rodríguez",
+    "Romulo Gallego": "Yuver Coa",
+    "Paez": "Richard Páez",
+    "Muñoz": "Lcdo. Rafael Rodríguez"
+  };
+
+  const CONFIG_DESTINATARIOS = [
+    { id: 1, nombre: "Sala situacional, San Fernando de Apure", numero: "584124608107", cargo: "Maria Eugenia Garrido" },
+    { id: 2, nombre: "Sala situacional, San Fernando de Apure", numero: "584243753877", cargo: "Gerson Jesus Solano" }
+  ];
+
+  // Variables de Estado Globales
+  let currentProgram = 'aedes';
+  let currentAedesType = 'abordaje';
+
+  // Inicialización al cargar la ventana
+  document.addEventListener('DOMContentLoaded', () => {
+    if (window.lucide) {
+      lucide.createIcons();
     }
+    resetFormDates();
+    addPacienteField();
+    renderRecipients();
+    checkMissingFields();
+  });
 
-    function closeRecipientModal() {
-      document.getElementById('modal-recipients').classList.add('hidden');
+  function resetFormDates() {
+    const today = new Date();
+    document.getElementById('fecha_dia').value = today.getDate();
+    document.getElementById('fecha_mes').value = today.getMonth() + 1;
+    document.getElementById('fecha_ano').value = today.getFullYear();
+  }
+
+  // Relleno automático de responsable según el Municipio y Programa actual
+  function autoSelectResponsable() {
+    const muniSelect = document.getElementById('municipio');
+    const respInput = document.getElementById('responsable_local');
+    const selectedVal = muniSelect.value;
+
+    const mapaActual = (currentProgram === 'roedores') ? RESPONSABLES_ROEDORES : RESPONSABLES_AEDES;
+
+    if (selectedVal && mapaActual[selectedVal]) {
+      respInput.value = mapaActual[selectedVal];
+    } else {
+      respInput.value = '';
     }
+  }
 
-    function renderRecipients() {
-      const container = document.getElementById('recipients-list');
-      container.innerHTML = '';
+  // Sistema de Notificación Toast
+  function showToast(title, message, isSuccess = true) {
+    const toast = document.getElementById('custom-toast');
+    document.getElementById('toast-title').innerText = title;
+    document.getElementById('toast-message').innerText = message;
 
-      CONFIG_DESTINATARIOS.forEach(dest => {
-        const item = document.createElement('button');
-        item.type = 'button';
-        item.className = 'w-full p-3.5 bg-slate-50 hover:bg-emerald-50/80 border border-slate-200 hover:border-emerald-300 rounded-xl flex items-center justify-between text-left transition-all group shadow-sm';
-        item.onclick = () => sendReportTo(dest.numero);
-        item.innerHTML = `
+    const iconContainer = document.getElementById('toast-icon');
+    if (isSuccess) {
+      iconContainer.className = "p-1.5 rounded-xl bg-emerald-500/20 text-emerald-400";
+      iconContainer.innerHTML = '<i data-lucide="check-circle-2" class="w-5 h-5"></i>';
+    } else {
+      iconContainer.className = "p-1.5 rounded-xl bg-amber-500/20 text-amber-400";
+      iconContainer.innerHTML = '<i data-lucide="alert-circle" class="w-5 h-5"></i>';
+    }
+    if (window.lucide) {
+      lucide.createIcons();
+    }
+    toast.classList.remove('hidden');
+
+    setTimeout(() => {
+      hideToast();
+    }, 5000);
+  }
+
+  function hideToast() {
+    document.getElementById('custom-toast').classList.add('hidden');
+  }
+
+  // Modal de Destinatarios
+  function openRecipientModal() {
+    document.getElementById('modal-recipients').classList.remove('hidden');
+  }
+
+  function closeRecipientModal() {
+    document.getElementById('modal-recipients').classList.add('hidden');
+  }
+
+  function renderRecipients() {
+    const container = document.getElementById('recipients-list');
+    container.innerHTML = '';
+
+    CONFIG_DESTINATARIOS.forEach(dest => {
+      const item = document.createElement('button');
+      item.type = 'button';
+      item.className = 'w-full p-3.5 bg-slate-50 hover:bg-emerald-50/80 border border-slate-200 hover:border-emerald-300 rounded-xl flex items-center justify-between text-left transition-all group shadow-sm';
+      item.onclick = () => sendReportTo(dest.numero);
+      item.innerHTML = `
           <div>
-            <p class="text-xs font-bold text-slate-800 group-hover:text-emerald-800">${dest.nombre}</p>
-            <p class="text-[19px] text-slate-500 font-medium">${dest.cargo}</p>
+            <p class="text-sm font-bold text-slate-800 group-hover:text-emerald-800">${dest.nombre}</p>
+            <p class="text-xs text-slate-500 font-medium">${dest.cargo}</p>
           </div>
           <i data-lucide="chevron-right" class="w-4 h-4 text-slate-400 group-hover:text-emerald-600"></i>
         `;
-        container.appendChild(item);
-      });
-      if (window.lucide) {
-        lucide.createIcons();
-      }
+      container.appendChild(item);
+    });
+    if (window.lucide) {
+      lucide.createIcons();
+    }
+  }
+
+  // Cambio de Programa Principal (Aedes vs Roedores)
+  function setProgram(prog) {
+    currentProgram = prog;
+
+    const tabAedes = document.getElementById('tab-aedes');
+    const tabRoedores = document.getElementById('tab-roedores');
+    const subAedes = document.getElementById('sub-aedes-container');
+
+    if (prog === 'aedes') {
+      tabAedes.className = "py-3 px-3 rounded-xl font-bold text-sm flex items-center justify-center gap-2 transition-all duration-200 shadow-sm bg-white text-blue-900";
+      tabRoedores.className = "py-3 px-3 rounded-xl font-semibold text-sm flex items-center justify-center gap-2 transition-all duration-200 text-slate-600 hover:text-slate-900";
+      subAedes.classList.remove('hidden');
+
+      document.getElementById('section-casas').classList.remove('hidden');
+      document.getElementById('section-criaderos').classList.remove('hidden');
+      document.getElementById('section-depositos').classList.remove('hidden');
+      document.getElementById('insumos-aedes').classList.remove('hidden');
+
+      document.getElementById('section-casas-roedores').classList.add('hidden');
+      document.getElementById('insumos-roedores').classList.add('hidden');
+
+      setAedesType(currentAedesType);
+
+    } else {
+      tabRoedores.className = "py-3 px-3 rounded-xl font-bold text-sm flex items-center justify-center gap-2 transition-all duration-200 shadow-sm bg-white text-blue-900";
+      tabAedes.className = "py-3 px-3 rounded-xl font-semibold text-sm flex items-center justify-center gap-2 transition-all duration-200 text-slate-600 hover:text-slate-900";
+      subAedes.classList.add('hidden');
+
+      document.getElementById('section-casas').classList.add('hidden');
+      document.getElementById('section-criaderos').classList.add('hidden');
+      document.getElementById('section-depositos').classList.add('hidden');
+      document.getElementById('insumos-aedes').classList.add('hidden');
+      document.getElementById('section-pacientes').classList.add('hidden');
+
+      document.getElementById('section-casas-roedores').classList.remove('hidden');
+      document.getElementById('insumos-roedores').classList.remove('hidden');
     }
 
-    // Cambio de Programa Principal (Aedes vs Roedores)
-    function setProgram(prog) {
-      currentProgram = prog;
+    autoSelectResponsable();
+    checkMissingFields();
+  }
 
-      const tabAedes = document.getElementById('tab-aedes');
-      const tabRoedores = document.getElementById('tab-roedores');
-      const subAedes = document.getElementById('sub-aedes-container');
+  // Subpestañas Aedes
+  function setAedesType(type) {
+    currentAedesType = type;
+    const btnAbordaje = document.getElementById('subtab-abordaje');
+    const btnFocal = document.getElementById('subtab-focal');
+    const secPacientes = document.getElementById('section-pacientes');
 
-      if (prog === 'aedes') {
-        tabAedes.className = "py-2.5 px-3 rounded-xl font-bold text-xs flex items-center justify-center gap-2 transition-all duration-200 shadow-sm bg-white text-blue-900";
-        tabRoedores.className = "py-2.5 px-3 rounded-xl font-semibold text-xs flex items-center justify-center gap-2 transition-all duration-200 text-slate-600 hover:text-slate-900";
-        subAedes.classList.remove('hidden');
-
-        document.getElementById('section-casas').classList.remove('hidden');
-        document.getElementById('section-criaderos').classList.remove('hidden');
-        document.getElementById('section-depositos').classList.remove('hidden');
-        document.getElementById('insumos-aedes').classList.remove('hidden');
-
-        document.getElementById('section-casas-roedores').classList.add('hidden');
-        document.getElementById('insumos-roedores').classList.add('hidden');
-
-        setAedesType(currentAedesType);
-
-      } else {
-        tabRoedores.className = "py-2.5 px-3 rounded-xl font-bold text-xs flex items-center justify-center gap-2 transition-all duration-200 shadow-sm bg-white text-blue-900";
-        tabAedes.className = "py-2.5 px-3 rounded-xl font-semibold text-xs flex items-center justify-center gap-2 transition-all duration-200 text-slate-600 hover:text-slate-900";
-        subAedes.classList.add('hidden');
-
-        document.getElementById('section-casas').classList.add('hidden');
-        document.getElementById('section-criaderos').classList.add('hidden');
-        document.getElementById('section-depositos').classList.add('hidden');
-        document.getElementById('insumos-aedes').classList.add('hidden');
-        document.getElementById('section-pacientes').classList.add('hidden');
-
-        document.getElementById('section-casas-roedores').classList.remove('hidden');
-        document.getElementById('insumos-roedores').classList.remove('hidden');
-      }
-
-      autoSelectResponsable();
-      checkMissingFields();
+    if (type === 'abordaje') {
+      btnAbordaje.className = "py-2.5 px-3 rounded-xl text-xs font-bold text-center transition-all bg-blue-700 text-white shadow-sm";
+      btnFocal.className = "py-2.5 px-3 rounded-xl text-xs font-semibold text-center transition-all text-slate-600 hover:bg-white/50";
+      secPacientes.classList.add('hidden');
+    } else {
+      btnFocal.className = "py-2.5 px-3 rounded-xl text-xs font-bold text-center transition-all bg-blue-700 text-white shadow-sm";
+      btnAbordaje.className = "py-2.5 px-3 rounded-xl text-xs font-semibold text-center transition-all text-slate-600 hover:bg-white/50";
+      secPacientes.classList.remove('hidden');
     }
+    checkMissingFields();
+  }
 
-    // Subpestañas Aedes
-    function setAedesType(type) {
-      currentAedesType = type;
-      const btnAbordaje = document.getElementById('subtab-abordaje');
-      const btnFocal = document.getElementById('subtab-focal');
-      const secPacientes = document.getElementById('section-pacientes');
+  // Comprobación de campos incompletos
+  function checkMissingFields() {
+    const missingList = [];
+    const fields = document.querySelectorAll('.data-field');
 
-      if (type === 'abordaje') {
-        btnAbordaje.className = "py-2 px-3 rounded-xl text-xs font-bold text-center transition-all bg-blue-700 text-white shadow-sm";
-        btnFocal.className = "py-2 px-3 rounded-xl text-xs font-semibold text-center transition-all text-slate-600 hover:bg-white/50";
-        secPacientes.classList.add('hidden');
-      } else {
-        btnFocal.className = "py-2 px-3 rounded-xl text-xs font-bold text-center transition-all bg-blue-700 text-white shadow-sm";
-        btnAbordaje.className = "py-2 px-3 rounded-xl text-xs font-semibold text-center transition-all text-slate-600 hover:bg-white/50";
-        secPacientes.classList.remove('hidden');
-      }
-      checkMissingFields();
-    }
+    fields.forEach(field => {
+      if (field.closest('#section-pacientes') && currentAedesType !== 'focal') return;
 
-    // Comprobación de campos incompletos
-    function checkMissingFields() {
-      const missingList = [];
-      const fields = document.querySelectorAll('.data-field');
+      const value = field.value.trim();
+      const label = field.getAttribute('data-label') || field.placeholder || 'Campo';
 
-      fields.forEach(field => {
-        if (field.closest('#section-pacientes') && currentAedesType !== 'focal') return;
-
-        const value = field.value.trim();
-        const label = field.getAttribute('data-label') || field.placeholder || 'Campo';
-
-        if (!value) {
-          field.classList.add('input-missing');
-          if (!missingList.includes(label)) {
-            missingList.push(label);
-          }
-        } else {
-          field.classList.remove('input-missing');
+      if (!value) {
+        field.classList.add('input-missing');
+        if (!missingList.includes(label)) {
+          missingList.push(label);
         }
-      });
-
-      const alertBox = document.getElementById('missing-alert');
-      const listText = document.getElementById('missing-fields-list');
-
-      if (missingList.length > 0) {
-        alertBox.classList.remove('hidden');
-        listText.innerText = missingList.join(', ');
       } else {
-        alertBox.classList.add('hidden');
+        field.classList.remove('input-missing');
       }
+    });
+
+    const alertBox = document.getElementById('missing-alert');
+    const listText = document.getElementById('missing-fields-list');
+
+    if (missingList.length > 0) {
+      alertBox.classList.remove('hidden');
+      listText.innerText = missingList.join(', ');
+    } else {
+      alertBox.classList.add('hidden');
     }
+  }
 
-    // Manejo de Pacientes Dinámicos
-    function addPacienteField() {
-      const container = document.getElementById('pacientes-list');
-      const count = container.children.length + 1;
+  // Manejo de Pacientes Dinámicos
+  function addPacienteField() {
+    const container = document.getElementById('pacientes-list');
+    const count = container.children.length + 1;
 
-      const card = document.createElement('div');
-      card.className = 'paciente-card bg-slate-50/80 border border-slate-200 rounded-xl p-3 space-y-2 relative shadow-inner';
-      card.innerHTML = `
+    const card = document.createElement('div');
+    card.className = 'paciente-card bg-slate-50/80 border border-slate-200 rounded-xl p-3 space-y-2 relative shadow-inner';
+    card.innerHTML = `
         <div class="flex items-center justify-between">
           <span class="text-xs font-bold text-indigo-800 uppercase">Paciente #${count}</span>
           ${count > 1 ? `
@@ -764,102 +901,97 @@
           ` : ''}
         </div>
         <div>
-          <label class="block text-[19px] font-semibold text-slate-500 mb-0.5">Nombre Completo</label>
-          <input type="text" class="pac-nombre data-field w-full px-2.5 py-1.5 text-xs bg-white border border-slate-200 rounded-lg font-medium" placeholder="Nombre del paciente" data-label="Nombre Paciente #${count}">
+          <label class="block text-xs font-semibold text-slate-500 mb-0.5">Nombre Completo</label>
+          <input type="text" class="pac-nombre data-field w-full px-3 py-2 text-sm bg-white border border-slate-200 rounded-lg font-medium" placeholder="Nombre del paciente" data-label="Nombre Paciente #${count}">
         </div>
         <div class="grid grid-cols-2 gap-2">
           <div>
-            <label class="block text-[19px] font-semibold text-slate-500 mb-0.5">Edad (Años)</label>
-            <input type="number" class="pac-edad data-field w-full px-2.5 py-1.5 text-xs bg-white border border-slate-200 rounded-lg font-medium" placeholder="Edad" data-label="Edad Paciente #${count}">
+            <label class="block text-xs font-semibold text-slate-500 mb-0.5">Edad (Años)</label>
+            <input type="number" class="pac-edad data-field w-full px-3 py-2 text-sm bg-white border border-slate-200 rounded-lg font-medium" placeholder="Edad" data-label="Edad Paciente #${count}">
           </div>
           <div>
-            <label class="block text-[19px] font-semibold text-slate-500 mb-0.5">C.I.</label>
-            <input type="text" class="pac-ci data-field w-full px-2.5 py-1.5 text-xs bg-white border border-slate-200 rounded-lg font-medium" placeholder="V-0000000" data-label="C.I. Paciente #${count}">
+            <label class="block text-xs font-semibold text-slate-500 mb-0.5">C.I.</label>
+            <input type="text" class="pac-ci data-field w-full px-3 py-2 text-sm bg-white border border-slate-200 rounded-lg font-medium" placeholder="V-0000000" data-label="C.I. Paciente #${count}">
           </div>
         </div>
         <div>
-          <label class="block text-[19px] font-semibold text-slate-500 mb-0.5">Fecha de Nacimiento (F.N)</label>
+          <label class="block text-xs font-semibold text-slate-500 mb-0.5">Fecha de Nacimiento (F.N)</label>
           <div class="grid grid-cols-3 gap-1.5">
-            <input type="number" class="pac-fndia data-field w-full px-2 py-1 text-xs bg-white border border-slate-200 rounded-lg text-center font-medium" placeholder="Día" data-label="Día F.N. Paciente #${count}">
-            <input type="number" class="pac-fnmes data-field w-full px-2 py-1 text-xs bg-white border border-slate-200 rounded-lg text-center font-medium" placeholder="Mes" data-label="Mes F.N. Paciente #${count}">
-            <input type="number" class="pac-fnano data-field w-full px-2 py-1 text-xs bg-white border border-slate-200 rounded-lg text-center font-medium" placeholder="Año" data-label="Año F.N. Paciente #${count}">
+            <input type="number" class="pac-fndia data-field w-full px-2 py-1.5 text-sm bg-white border border-slate-200 rounded-lg text-center font-medium" placeholder="Día" data-label="Día F.N. Paciente #${count}">
+            <input type="number" class="pac-fnmes data-field w-full px-2 py-1.5 text-sm bg-white border border-slate-200 rounded-lg text-center font-medium" placeholder="Mes" data-label="Mes F.N. Paciente #${count}">
+            <input type="number" class="pac-fnano data-field w-full px-2 py-1.5 text-sm bg-white border border-slate-200 rounded-lg text-center font-medium" placeholder="Año" data-label="Año F.N. Paciente #${count}">
           </div>
         </div>
       `;
 
-      container.appendChild(card);
-      if (window.lucide) {
-        lucide.createIcons();
+    container.appendChild(card);
+    if (window.lucide) {
+      lucide.createIcons();
+    }
+    checkMissingFields();
+  }
+
+  function removePacienteField(btn) {
+    btn.closest('.paciente-card').remove();
+    const cards = document.querySelectorAll('.paciente-card');
+    cards.forEach((card, idx) => {
+      card.querySelector('span').innerText = `Paciente #${idx + 1}`;
+    });
+    checkMissingFields();
+  }
+
+  // FUNCIÓN DE RESTABLECIMIENTO DE DATOS DEL FORMULARIO
+  function resetReportForm() {
+    document.getElementById('municipio').value = "";
+    document.getElementById('parroquia').value = "";
+    document.getElementById('sector').value = "";
+    document.getElementById('asic').value = "";
+    document.getElementById('responsable_local').value = "";
+
+    resetFormDates();
+
+    const numberInputs = document.querySelectorAll('input[type="number"]');
+    numberInputs.forEach(input => {
+      if (input.id !== 'fecha_dia' && input.id !== 'fecha_mes' && input.id !== 'fecha_ano') {
+        input.value = "0";
       }
-      checkMissingFields();
-    }
+    });
 
-    function removePacienteField(btn) {
-      btn.closest('.paciente-card').remove();
-      const cards = document.querySelectorAll('.paciente-card');
-      cards.forEach((card, idx) => {
-        card.querySelector('span').innerText = `Paciente #${idx + 1}`;
-      });
-      checkMissingFields();
-    }
+    const pacContainer = document.getElementById('pacientes-list');
+    pacContainer.innerHTML = '';
+    addPacienteField();
 
-    // FUNCIÓN DE RESTABLECIMIENTO DE DATOS DEL FORMULARIO
-    function resetReportForm() {
-      // 1. Resetear inputs de texto, select y numéricos generales
-      document.getElementById('municipio').value = "";
-      document.getElementById('parroquia').value = "";
-      document.getElementById('sector').value = "";
-      document.getElementById('asic').value = "";
-      document.getElementById('responsable_local').value = "";
+    const fields = document.querySelectorAll('.data-field');
+    fields.forEach(f => f.classList.remove('input-missing'));
+    document.getElementById('missing-alert').classList.add('hidden');
 
-      // 2. Restablecer fechas al día actual
-      resetFormDates();
+    showToast("Reporte Enviado", "El reporte ha sido generado y los datos se han restablecido correctamente.", true);
+  }
 
-      // 3. Restablecer valores numéricos a 0
-      const numberInputs = document.querySelectorAll('input[type="number"]');
-      numberInputs.forEach(input => {
-        if (input.id !== 'fecha_dia' && input.id !== 'fecha_mes' && input.id !== 'fecha_ano') {
-          input.value = "0";
-        }
-      });
+  // CONSTRUCCIÓN DEL REPORTE Y ENVÍO A WHATSAPP
+  function sendReportTo(phoneNum) {
+    closeRecipientModal();
 
-      // 4. Limpiar pacientes dinámicos y dejar uno limpio por defecto
-      const pacContainer = document.getElementById('pacientes-list');
-      pacContainer.innerHTML = '';
-      addPacienteField();
+    const dia = document.getElementById('fecha_dia').value || '__';
+    const mes = document.getElementById('fecha_mes').value || '__';
+    const ano = document.getElementById('fecha_ano').value || '__';
 
-      // 5. Restablecer clases de faltantes y ocultar alerta de faltantes
-      const fields = document.querySelectorAll('.data-field');
-      fields.forEach(f => f.classList.remove('input-missing'));
-      document.getElementById('missing-alert').classList.add('hidden');
+    const municipio = document.getElementById('municipio').value || 'Sin especificar';
+    const parroquia = document.getElementById('parroquia').value || 'Sin especificar';
+    const sector = document.getElementById('sector').value || 'Sin especificar';
+    const asic = document.getElementById('asic').value || 'Sin especificar';
+    const respLocal = document.getElementById('responsable_local').value || 'No asignado';
 
-      showToast("Reporte Enviado", "El reporte ha sido generado y los datos se han restablecido correctamente.", true);
-    }
+    let messageText = "";
 
-    // CONSTRUCCIÓN DEL REPORTE Y ENVÍO A WHATSAPP
-    function sendReportTo(phoneNum) {
-      closeRecipientModal();
+    if (currentProgram === 'roedores') {
+      const casasInsp = document.getElementById('roedores_casas_insp').value || '0';
+      const tratamiento = document.getElementById('roedores_tratamiento').value || '0';
+      const gastoRod = document.getElementById('gasto_rodenticida').value || '0';
+      const uniRod = document.getElementById('unidad_rodenticida').value;
+      const habProt = document.getElementById('hab_protegidos').value || '0';
 
-      const dia = document.getElementById('fecha_dia').value || '__';
-      const mes = document.getElementById('fecha_mes').value || '__';
-      const ano = document.getElementById('fecha_ano').value || '__';
-
-      const municipio = document.getElementById('municipio').value || 'Sin especificar';
-      const parroquia = document.getElementById('parroquia').value || 'Sin especificar';
-      const sector = document.getElementById('sector').value || 'Sin especificar';
-      const asic = document.getElementById('asic').value || 'Sin especificar';
-      const respLocal = document.getElementById('responsable_local').value || 'No asignado';
-
-      let messageText = "";
-
-      if (currentProgram === 'roedores') {
-        const casasInsp = document.getElementById('roedores_casas_insp').value || '0';
-        const tratamiento = document.getElementById('roedores_tratamiento').value || '0';
-        const gastoRod = document.getElementById('gasto_rodenticida').value || '0';
-        const uniRod = document.getElementById('unidad_rodenticida').value;
-        const habProt = document.getElementById('hab_protegidos').value || '0';
-
-        messageText = `Dirección Salud Ambiental Apure
+      messageText = `Dirección Salud Ambiental Apure
 "Plan Nacional de Desratización"
 Coordinación de Control de Vectores y Faunas Nocivas 
 Programa: Control de Roedores
@@ -886,84 +1018,83 @@ Actividades Ejecutadas:
 
 Pasión por Apure!!!`;
 
-      } else if (currentAedesType === 'abordaje') {
-        messageText = buildAedesReport('Reporte: "Abordaje Comunitario"');
+    } else if (currentAedesType === 'abordaje') {
+      messageText = buildAedesReport('Reporte: "Abordaje Comunitario"');
 
-      } else {
-        let pacientesTexto = "";
-        const cards = document.querySelectorAll('.paciente-card');
+    } else {
+      let pacientesTexto = "";
+      const cards = document.querySelectorAll('.paciente-card');
 
-        cards.forEach((card, idx) => {
-          const pNombre = card.querySelector('.pac-nombre').value || 'Sin especificar';
-          const pEdad = card.querySelector('.pac-edad').value || '0';
-          const pCi = card.querySelector('.pac-ci').value || 'Sin CI';
-          const pFnDia = card.querySelector('.pac-fndia').value || '__';
-          const pFnMes = card.querySelector('.pac-fnmes').value || '__';
-          const pFnAno = card.querySelector('.pac-fnano').value || '__';
+      cards.forEach((card, idx) => {
+        const pNombre = card.querySelector('.pac-nombre').value || 'Sin especificar';
+        const pEdad = card.querySelector('.pac-edad').value || '0';
+        const pCi = card.querySelector('.pac-ci').value || 'Sin CI';
+        const pFnDia = card.querySelector('.pac-fndia').value || '__';
+        const pFnMes = card.querySelector('.pac-fnmes').value || '__';
+        const pFnAno = card.querySelector('.pac-fnano').value || '__';
 
-          pacientesTexto += `Paciente:
+        pacientesTexto += `Paciente:
 * ${pNombre} 
 * Edad:${pEdad} años
 * C.I: ${pCi}
 * F.N: ${pFnDia}/${pFnMes}/${pFnAno}\n\n`;
-        });
+      });
 
-        messageText = buildAedesReport('Reporte: "Tratamiento Focal"', pacientesTexto);
-      }
-
-      const cleanPhone = phoneNum.replace(/[^0-9]/g, '');
-      const targetUrl = `https://api.whatsapp.com/send?phone=${cleanPhone}&text=${encodeURIComponent(messageText)}`;
-
-      // Redirigir a WhatsApp y ejecutar el reseteo de los datos
-      setTimeout(() => {
-        window.location.href = targetUrl;
-        resetReportForm();
-      }, 300);
+      messageText = buildAedesReport('Reporte: "Tratamiento Focal"', pacientesTexto);
     }
 
-    function buildAedesReport(reporteTitulo, pacienteBloque = "") {
-      const dia = document.getElementById('fecha_dia').value || '__';
-      const mes = document.getElementById('fecha_mes').value || '__';
-      const ano = document.getElementById('fecha_ano').value || '__';
+    const cleanPhone = phoneNum.replace(/[^0-9]/g, '');
+    const targetUrl = `https://api.whatsapp.com/send?phone=${cleanPhone}&text=${encodeURIComponent(messageText)}`;
 
-      const municipio = document.getElementById('municipio').value || 'Sin especificar';
-      const parroquia = document.getElementById('parroquia').value || 'Sin especificar';
-      const sector = document.getElementById('sector').value || 'Sin especificar';
-      const asic = document.getElementById('asic').value || 'Sin especificar';
-      const respLocal = document.getElementById('responsable_local').value || 'No asignado';
+    setTimeout(() => {
+      window.location.href = targetUrl;
+      resetReportForm();
+    }, 300);
+  }
 
-      const cVisitadas = document.getElementById('casas_visitadas').value || '0';
-      const cInsp = document.getElementById('casas_inspeccionadas').value || '0';
-      const cPos = document.getElementById('casas_positivas').value || '0';
-      const cAus = document.getElementById('casas_ausentes').value || '0';
-      const cRen = document.getElementById('casas_renuentes').value || '0';
-      const cTrat = document.getElementById('casas_tratadas').value || '0';
-      const cFum = document.getElementById('casas_fumigadas').value || '0';
+  function buildAedesReport(reporteTitulo, pacienteBloque = "") {
+    const dia = document.getElementById('fecha_dia').value || '__';
+    const mes = document.getElementById('fecha_mes').value || '__';
+    const ano = document.getElementById('fecha_ano').value || '__';
 
-      const crTrat = document.getElementById('criaderos_tratados').value || '0';
-      const crElim = document.getElementById('criaderos_eliminados').value || '0';
-      const crInsp = document.getElementById('criaderos_inspeccionados').value || '0';
-      const crPos = document.getElementById('criaderos_positivos').value || '0';
+    const municipio = document.getElementById('municipio').value || 'Sin especificar';
+    const parroquia = document.getElementById('parroquia').value || 'Sin especificar';
+    const sector = document.getElementById('sector').value || 'Sin especificar';
+    const asic = document.getElementById('asic').value || 'Sin especificar';
+    const respLocal = document.getElementById('responsable_local').value || 'No asignado';
 
-      const abate = document.getElementById('gasto_abate').value || '0';
-      const uniAbate = document.getElementById('unidad_abate').value;
-      const insecticida = document.getElementById('gasto_insecticida').value || '0';
-      const uniInsecticida = document.getElementById('unidad_insecticida').value;
+    const cVisitadas = document.getElementById('casas_visitadas').value || '0';
+    const cInsp = document.getElementById('casas_inspeccionadas').value || '0';
+    const cPos = document.getElementById('casas_positivas').value || '0';
+    const cAus = document.getElementById('casas_ausentes').value || '0';
+    const cRen = document.getElementById('casas_renuentes').value || '0';
+    const cTrat = document.getElementById('casas_tratadas').value || '0';
+    const cFum = document.getElementById('casas_fumigadas').value || '0';
 
-      const depTanques = document.getElementById('dep_tanques').value || '0';
-      const depTanquesPos = document.getElementById('dep_tanques_pos').value || '0';
-      const depBarriles = document.getElementById('dep_barriles').value || '0';
-      const depBarrilesPos = document.getElementById('dep_barriles_pos').value || '0';
-      const depCauchos = document.getElementById('dep_cauchos').value || '0';
-      const depCauchosPos = document.getElementById('dep_cauchos_pos').value || '0';
-      const depMateros = document.getElementById('dep_materos').value || '0';
-      const depMaterosPos = document.getElementById('dep_materos_pos').value || '0';
-      const depDiversos = document.getElementById('dep_diversos').value || '0';
-      const depDiversosPos = document.getElementById('dep_diversos_pos').value || '0';
+    const crTrat = document.getElementById('criaderos_tratados').value || '0';
+    const crElim = document.getElementById('criaderos_eliminados').value || '0';
+    const crInsp = document.getElementById('criaderos_inspeccionados').value || '0';
+    const crPos = document.getElementById('criaderos_positivos').value || '0';
 
-      const habProt = document.getElementById('hab_protegidos').value || '0';
+    const abate = document.getElementById('gasto_abate').value || '0';
+    const uniAbate = document.getElementById('unidad_abate').value;
+    const insecticida = document.getElementById('gasto_insecticida').value || '0';
+    const uniInsecticida = document.getElementById('unidad_insecticida').value;
 
-      return `Dirección de Salud Ambiental Apure
+    const depTanques = document.getElementById('dep_tanques').value || '0';
+    const depTanquesPos = document.getElementById('dep_tanques_pos').value || '0';
+    const depBarriles = document.getElementById('dep_barriles').value || '0';
+    const depBarrilesPos = document.getElementById('dep_barriles_pos').value || '0';
+    const depCauchos = document.getElementById('dep_cauchos').value || '0';
+    const depCauchosPos = document.getElementById('dep_cauchos_pos').value || '0';
+    const depMateros = document.getElementById('dep_materos').value || '0';
+    const depMaterosPos = document.getElementById('dep_materos_pos').value || '0';
+    const depDiversos = document.getElementById('dep_diversos').value || '0';
+    const depDiversosPos = document.getElementById('dep_diversos_pos').value || '0';
+
+    const habProt = document.getElementById('hab_protegidos').value || '0';
+
+    return `Dirección de Salud Ambiental Apure
 "Plan Nacional para la Prevención y Control del Dengue"
 Coordinación Control de Vectores y Faunas Nocivas 
 Programa: Aedes aegypti 
@@ -1010,38 +1141,42 @@ DEPOSITOS  Y CRIADEROS
 *Hab. Protegidos: ${habProt}
 
 ¡¡¡Pasión por Apure!!!`;
-    }
-  </script>
+  }
+</script>
 <!-- ======================================================= -->
-  <!-- BOTÓN FLOTANTE DE DESCARGA APK (CON ANIMACIÓN)           -->
-  <!-- ======================================================= -->
-  <style>
-    @keyframes floatButton {
-      0%, 100% {
-        transform: translateY(0);
-      }
-      50% {
-        transform: translateY(-6px);
-      }
-    }
-    .floating-apk-btn {
-      animation: floatButton 2.5s ease-in-out infinite;
-    }
-  </style>
+<!-- BOTÓN FLOTANTE DE DESCARGA APK (CON ANIMACIÓN)           -->
+<!-- ======================================================= -->
+<style>
+  @keyframes floatButton {
 
-  <div class="fixed bottom-20 right-4 z-40">
-    <a href="https://github.com/gersonsolano93-beep/Reportediario/raw/refs/heads/main/Salud%20Ambiental%20Reporte%20Diario.apk"
-       download="Salud_Ambiental_Apure.apk"
-       class="floating-apk-btn flex items-center gap-2 bg-gradient-to-r from-blue-700 to-indigo-700 hover:from-blue-800 hover:to-indigo-800 text-white font-bold py-1 px-2 rounded-full shadow-2xl border-2 border-white/30 backdrop-blur-md transition-all active:scale-95">
-      <div class="w-6 h-6 rounded-full bg-white/20 flex items-center justify-center shrink-0">
-        <i data-lucide="arrow-down" class="w-4 h-4 text-white animate-bounce"></i>
-      </div>
-      <div class="flex flex-col text-left leading-tight pr-1">
-        <span class="text-[10px] text-blue-200 uppercase tracking-wider font-semibold">Versión</span>
-        <span class="text-sm font-extrabold tracking-wide">APK</span>
-      </div>
-    </a>
-  </div>
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+
+    50% {
+      transform: translateY(-6px);
+    }
+  }
+
+  .floating-apk-btn {
+    animation: floatButton 2.5s ease-in-out infinite;
+  }
+</style>
+
+<div class="fixed bottom-20 right-4 z-40">
+  <a href="https://github.com/gersonsolano93-beep/Reportediario/raw/refs/heads/main/Salud%20Ambiental%20Reporte%20Diario.apk"
+    download="Salud_Ambiental_Apure.apk"
+    class="floating-apk-btn flex items-center gap-2 bg-gradient-to-r from-blue-700 to-indigo-700 hover:from-blue-800 hover:to-indigo-800 text-white font-bold py-1 px-2 rounded-full shadow-2xl border-2 border-white/30 backdrop-blur-md transition-all active:scale-95">
+    <div class="w-7 h-7 rounded-full bg-white/20 flex items-center justify-center shrink-0">
+      <i data-lucide="arrow-down" class="w-4 h-4 text-white animate-bounce"></i>
+    </div>
+    <div class="flex flex-col text-left leading-tight pr-1">
+      <span class="text-[10px] text-blue-200 uppercase tracking-wider font-semibold">Versión</span>
+      <span class="text-sm font-extrabold tracking-wide">APK</span>
+    </div>
+  </a>
+</div>
 </body>
 
 </html>
