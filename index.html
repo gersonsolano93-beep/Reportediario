@@ -1188,6 +1188,36 @@ DEPOSITOS  Y CRIADEROS
 ¡¡¡Pasión por Apure!!!`;
     }
   </script>
+<!-- ======================================================= -->
+  <!-- BOTÓN FLOTANTE DE DESCARGA APK (CON ANIMACIÓN)           -->
+  <!-- ======================================================= -->
+  <style>
+    @keyframes floatButton {
+      0%, 100% {
+        transform: translateY(0);
+      }
+      50% {
+        transform: translateY(-6px);
+      }
+    }
+    .floating-apk-btn {
+      animation: floatButton 2.5s ease-in-out infinite;
+    }
+  </style>
+
+  <div class="fixed bottom-20 right-4 z-40">
+    <a href="https://github.com/gersonsolano93-beep/Reportediario/raw/refs/heads/main/Salud%20Ambiental%20Reporte%20Diario.apk"
+       download="Salud_Ambiental_Apure.apk"
+       class="floating-apk-btn flex items-center gap-2 bg-gradient-to-r from-blue-700 to-indigo-700 hover:from-blue-800 hover:to-indigo-800 text-white font-bold py-3 px-4 rounded-full shadow-2xl border-2 border-white/30 backdrop-blur-md transition-all active:scale-95">
+      <div class="w-7 h-7 rounded-full bg-white/20 flex items-center justify-center shrink-0">
+        <i data-lucide="arrow-down" class="w-4 h-4 text-white animate-bounce"></i>
+      </div>
+      <div class="flex flex-col text-left leading-tight pr-1">
+        <span class="text-[10px] text-blue-200 uppercase tracking-wider font-semibold">Versión</span>
+        <span class="text-sm font-extrabold tracking-wide">APK</span>
+      </div>
+    </a>
+  </div>
 </body>
 
 </html>
