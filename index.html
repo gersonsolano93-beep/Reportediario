@@ -7,22 +7,21 @@
     content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <title>Salud Ambiental Apure - Sistema Profesional de Reportes</title>
 
-  <!-- Tailwind CSS desde CDN para que funcione directamente en GitHub Pages sin carpetas locales -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Lucide Icons desde CDN (versión estable) -->
-  <script src="https://unpkg.com/lucide@0.344.0/dist/umd/lucide.min.js"></script>
-
+  <!-- Tailwind CSS Local -->
+  <script src="js/tailwind.js"></script>
+  <!-- Lucide Icons Local -->
+  <script src="js/lucide.js"></script>
   <style>
-    /* Tamaño base optimizado para navegadores web móviles (Chrome, Safari, etc.) */
+    /* Aumenta el tamaño base de toda la app para que se vea más grande en la APK */
     html {
-      font-size: 16px;
+      font-size: 24px;
+      /* Puedes probar con 18px o 19px según tu preferencia */
     }
 
     body {
       -webkit-tap-highlight-color: transparent;
       user-select: none;
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      overflow-x: hidden;
     }
 
     input,
@@ -53,128 +52,50 @@
       animation: fadeIn 0.25s ease-out forwards;
     }
 
-    /* =======================================================
-     * ESTILOS Y ANIMACIONES DEL MOSQUITO CÓMICO (AEDES AEGYPTI)
-     * ======================================================= */
-    #mosquito-actor {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 48px;
-      height: 48px;
-      z-index: 9999;
-      cursor: pointer;
-      touch-action: manipulation;
-      will-change: transform;
-      filter: drop-shadow(0 6px 6px rgba(0, 0, 0, 0.28));
-      transition: opacity 0.3s ease;
+    body {
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     }
 
-    /* Aleteo ultra rápido de las alas */
-    @keyframes wingFlapLeft {
-      0%, 100% {
-        transform: rotate(-18deg) scaleY(1);
-      }
-      50% {
-        transform: rotate(32deg) scaleY(0.45);
-      }
+    input,
+    select,
+    textarea {
+      user-select: text;
     }
 
-    @keyframes wingFlapRight {
-      0%, 100% {
-        transform: rotate(18deg) scaleY(1);
+    .input-missing {
+      border-color: #f97316 !important;
+      background-color: #fff7ed !important;
+    }
+
+    /* Animación suave para modales y alertas */
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(-4px);
       }
-      50% {
-        transform: rotate(-32deg) scaleY(0.45);
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
       }
     }
 
-    .mosquito-wing-left {
-      transform-origin: 24px 21px;
-      animation: wingFlapLeft 0.055s infinite linear;
-    }
-
-    .mosquito-wing-right {
-      transform-origin: 24px 21px;
-      animation: wingFlapRight 0.055s infinite linear;
-    }
-
-    /* Globo de diálogo cómico del mosquito */
-    #mosquito-speech {
-      position: fixed;
-      z-index: 9998;
-      background: #1e293b;
-      color: #f8fafc;
-      font-size: 11px;
-      font-weight: 700;
-      padding: 4px 9px;
-      border-radius: 12px;
-      white-space: nowrap;
-      pointer-events: none;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-      border: 1px solid #475569;
-      opacity: 0;
-      transition: opacity 0.2s ease;
+    .animate-fade-in {
+      animation: fadeIn 0.25s ease-out forwards;
     }
   </style>
 </head>
 
 <body class="bg-slate-50 text-slate-800 antialiased min-h-screen pb-32">
 
-  <!-- MOSQUITO CÓMICO REVOLOTEANDO -->
-  <div id="mosquito-actor" title="¡Tócame si puedes! (Aedes aegypti)">
-    <svg viewBox="0 0 48 48" width="48" height="48" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <!-- Patas traseras largas con rayitas blancas características del Aedes -->
-      <path d="M21 25 L12 33 L8 42" stroke="#1e293b" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
-      <path d="M27 25 L36 33 L40 42" stroke="#1e293b" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
-      <circle cx="12" cy="33" r="1" fill="#ffffff" />
-      <circle cx="36" cy="33" r="1" fill="#ffffff" />
-
-      <!-- Patas medias -->
-      <path d="M20 22 L10 25 L6 31" stroke="#1e293b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-      <path d="M28 22 L38 25 L42 31" stroke="#1e293b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-
-      <!-- Patas delanteras -->
-      <path d="M21 18 L13 15 L10 10" stroke="#1e293b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-      <path d="M27 18 L35 15 L38 10" stroke="#1e293b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-
-      <!-- Abdomen rayado (blanco y negro estilo Aedes aegypti) -->
-      <ellipse cx="24" cy="30" rx="3.4" ry="7.5" fill="#0f172a" />
-      <line x1="21" y1="27" x2="27" y2="27" stroke="#f8fafc" stroke-width="1.2" />
-      <line x1="21" y1="30" x2="27" y2="30" stroke="#f8fafc" stroke-width="1.2" />
-      <line x1="21.5" y1="33" x2="26.5" y2="33" stroke="#f8fafc" stroke-width="1.2" />
-
-      <!-- Tórax -->
-      <ellipse cx="24" cy="21" rx="4" ry="4.5" fill="#1e293b" />
-      <!-- Diseño de lira blanca en el tórax -->
-      <path d="M22.3 18.5 C21.5 20.5, 21.5 22, 22.8 23.2 M25.7 18.5 C26.5 20.5, 26.5 22, 25.2 23.2" stroke="#ffffff" stroke-width="0.9" stroke-linecap="round" />
-
-      <!-- Alas translúcidas animadas -->
-      <ellipse class="mosquito-wing-left" cx="15" cy="22" rx="9" ry="3.2" fill="rgba(226, 232, 240, 0.78)" stroke="#94a3b8" stroke-width="0.8" />
-      <ellipse class="mosquito-wing-right" cx="33" cy="22" rx="9" ry="3.2" fill="rgba(226, 232, 240, 0.78)" stroke="#94a3b8" stroke-width="0.8" />
-
-      <!-- Cabeza y ojos grandes cómicos -->
-      <circle cx="24" cy="15.5" r="3" fill="#0f172a" />
-      <circle cx="22.6" cy="14.8" r="1.3" fill="#ffffff" />
-      <circle cx="25.4" cy="14.8" r="1.3" fill="#ffffff" />
-      <circle cx="22.6" cy="14.6" r="0.6" fill="#dc2626" />
-      <circle cx="25.4" cy="14.6" r="0.6" fill="#dc2626" />
-
-      <!-- Trompa (Probóscide) picuda -->
-      <path d="M24 12.5 L24 5.5" stroke="#0f172a" stroke-width="1.4" stroke-linecap="round" />
-      <!-- Antenas -->
-      <path d="M22.5 13 L19.5 9.5" stroke="#334155" stroke-width="1" stroke-linecap="round" />
-      <path d="M25.5 13 L28.5 9.5" stroke="#334155" stroke-width="1" stroke-linecap="round" />
-    </svg>
-  </div>
-  <div id="mosquito-speech">¡Bzzzz! ¡No me echen Abate!</div>
-
   <!-- Header Superior con Banner Institucional Profesional -->
   <header class="sticky top-0 z-50 bg-white/95 backdrop-blur-md shadow-sm border-b border-slate-200/80">
     <div class="max-w-md mx-auto relative overflow-hidden bg-white">
       <img src="banner.png" alt="Insalud Apure - Dirección Salud Ambiental"
         class="w-full h-auto object-contain max-h-24 mx-auto block py-1"
-        onerror="this.onerror=null; this.parentElement.innerHTML='<div class=\'bg-gradient-to-r from-blue-900 via-indigo-900 to-slate-900 text-white p-3.5 flex items-center justify-between shadow-inner\'><div class=\'flex items-center space-x-3\'><div class=\'w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center border border-white/20 shadow-sm shrink-0\'><i data-lucide=\'shield-check\' class=\'w-5 h-5 text-emerald-400\'></i></div><div><h1 class=\'text-base font-bold tracking-wide leading-tight\'>Salud Ambiental Apure</h1><p class=\'text-xs text-blue-200 font-medium\'>Sala Situacional, San Fernando</p></div></div><span class=\'px-2.5 py-1 rounded-full text-[10px] font-bold tracking-wider uppercase bg-emerald-500/20 text-emerald-300 border border-emerald-400/30 shrink-0\'>Gerson Solano V1.3</span></div>'; window.lucide && lucide.createIcons();">
+        onerror="this.onerror=null; this.parentElement.innerHTML='<div class=\'bg-gradient-to-r from-blue-900 via-indigo-900 to-slate-900 text-white p-3.5 flex items-center justify-between shadow-inner\'><div class=\'flex items-center space-x-3\'><div class=\'w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center border border-white/20 shadow-sm\'><i data-lucide=\'shield-check\' class=\'w-5 h-5 text-emerald-400\'></i></div><div><h1 class=\'text-sm font-bold tracking-wide leading-tight\'>Salud Ambiental</h1><p class=\'text-[19px] text-blue-200 font-medium\'>Sala Situacional, San Fernando de Apure</p></div></div><span class=\'px-2.5 py-1 rounded-full text-[10px] font-bold tracking-wider uppercase bg-emerald-500/20 text-emerald-300 border border-emerald-400/30\'>Gerson Solano V1.2</span></div>'; window.lucide && lucide.createIcons();">
     </div>
   </header>
 
@@ -188,8 +109,8 @@
         <i data-lucide="check-circle-2" class="w-5 h-5"></i>
       </div>
       <div class="flex-1">
-        <p id="toast-title" class="text-sm font-bold">Aviso</p>
-        <p id="toast-message" class="text-xs text-slate-300"></p>
+        <p id="toast-title" class="text-xs font-bold">Aviso</p>
+        <p id="toast-message" class="text-[19px] text-slate-300"></p>
       </div>
       <button onclick="hideToast()" class="text-slate-400 hover:text-white p-1">
         <i data-lucide="x" class="w-4 h-4"></i>
@@ -201,9 +122,9 @@
       class="hidden bg-amber-50/90 border border-amber-200/80 rounded-2xl p-3.5 text-xs text-amber-900 flex items-start space-x-3 shadow-sm">
       <i data-lucide="alert-circle" class="w-5 h-5 text-amber-600 shrink-0 mt-0.5"></i>
       <div class="flex-1">
-        <p class="font-bold mb-0.5 text-amber-900 text-sm">Campos pendientes por completar</p>
-        <p id="missing-fields-list" class="text-amber-700 leading-relaxed text-xs"></p>
-        <p class="mt-1 text-[11px] text-amber-600 font-medium italic">Nota: Puede proceder con el envío aunque existan
+        <p class="font-bold mb-0.5 text-amber-900">Campos pendientes por completar</p>
+        <p id="missing-fields-list" class="text-amber-700 leading-relaxed text-[19px]"></p>
+        <p class="mt-1 text-[10px] text-amber-600 font-medium italic">Nota: Puede proceder con el envío aunque existan
           campos vacíos.</p>
       </div>
     </div>
@@ -211,11 +132,11 @@
     <!-- Selector de Programa Principal (Aedes vs Roedores) -->
     <div class="grid grid-cols-2 gap-2 bg-slate-200/80 p-1.5 rounded-2xl shadow-inner">
       <button type="button" id="tab-aedes" onclick="setProgram('aedes')"
-        class="py-3 px-3 rounded-xl font-bold text-sm flex items-center justify-center gap-2 transition-all duration-200 shadow-sm bg-white text-blue-900">
+        class="py-2.5 px-3 rounded-xl font-bold text-xs flex items-center justify-center gap-2 transition-all duration-200 shadow-sm bg-white text-blue-900">
         <i data-lucide="bug" class="w-4 h-4 text-blue-600"></i> Programa Aedes
       </button>
       <button type="button" id="tab-roedores" onclick="setProgram('roedores')"
-        class="py-3 px-3 rounded-xl font-semibold text-sm flex items-center justify-center gap-2 transition-all duration-200 text-slate-600 hover:text-slate-900">
+        class="py-2.5 px-3 rounded-xl font-semibold text-xs flex items-center justify-center gap-2 transition-all duration-200 text-slate-600 hover:text-slate-900">
         <i data-lucide="rat" class="w-4 h-4 text-amber-600"></i> Control Roedores
       </button>
     </div>
@@ -224,11 +145,11 @@
     <div id="sub-aedes-container"
       class="grid grid-cols-2 gap-2 bg-blue-50/80 p-1.5 rounded-2xl border border-blue-100 shadow-sm">
       <button type="button" id="subtab-abordaje" onclick="setAedesType('abordaje')"
-        class="py-2.5 px-3 rounded-xl text-xs font-bold text-center transition-all bg-blue-700 text-white shadow-sm">
+        class="py-2 px-3 rounded-xl text-xs font-bold text-center transition-all bg-blue-700 text-white shadow-sm">
         Abordaje Comunitario
       </button>
       <button type="button" id="subtab-focal" onclick="setAedesType('focal')"
-        class="py-2.5 px-3 rounded-xl text-xs font-semibold text-center transition-all text-slate-600 hover:bg-white/50">
+        class="py-2 px-3 rounded-xl text-xs font-semibold text-center transition-all text-slate-600 hover:bg-white/50">
         Tratamiento Focal
       </button>
     </div>
@@ -242,27 +163,27 @@
           <div class="p-1.5 rounded-xl bg-blue-50 text-blue-700">
             <i data-lucide="map-pin" class="w-4 h-4"></i>
           </div>
-          <h2 class="text-sm font-bold uppercase tracking-wider text-slate-700">Ubicación y Fecha</h2>
+          <h2 class="text-xs font-bold uppercase tracking-wider text-slate-700">Ubicación y Fecha</h2>
         </div>
 
         <div>
           <label class="block text-xs font-semibold text-slate-600 mb-1">Fecha del Reporte</label>
           <div class="grid grid-cols-3 gap-2">
             <input type="number" id="fecha_dia" placeholder="Día" min="1" max="31"
-              class="data-field w-full px-3 py-2.5 text-base bg-slate-50/80 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:bg-white text-center font-semibold"
+              class="data-field w-full px-3 py-2 text-sm bg-slate-50/80 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:bg-white text-center font-semibold"
               data-label="Día">
             <input type="number" id="fecha_mes" placeholder="Mes" min="1" max="12"
-              class="data-field w-full px-3 py-2.5 text-base bg-slate-50/80 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:bg-white text-center font-semibold"
+              class="data-field w-full px-3 py-2 text-sm bg-slate-50/80 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:bg-white text-center font-semibold"
               data-label="Mes">
             <input type="number" id="fecha_ano" placeholder="Año" readonly
-              class="w-full px-3 py-2.5 text-base bg-slate-100 border border-slate-200 rounded-xl text-center text-slate-500 font-semibold">
+              class="w-full px-3 py-2 text-sm bg-slate-100 border border-slate-200 rounded-xl text-center text-slate-500 font-semibold">
           </div>
         </div>
 
         <div>
           <label for="municipio" class="block text-xs font-semibold text-slate-600 mb-1">Municipio</label>
           <select id="municipio" onchange="autoSelectResponsable(); checkMissingFields();"
-            class="data-field w-full px-3 py-2.5 text-base bg-slate-50/80 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:bg-white font-semibold text-slate-700"
+            class="data-field w-full px-3 py-2 text-sm bg-slate-50/80 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:bg-white font-semibold text-slate-700"
             data-label="Municipio">
             <option value="">-- Seleccionar Municipio --</option>
             <option value="Achaguas">Achaguas</option>
@@ -279,13 +200,13 @@
           <div>
             <label for="parroquia" class="block text-xs font-semibold text-slate-600 mb-1">Parroquia</label>
             <input type="text" id="parroquia" placeholder="Ej: El Recreo"
-              class="data-field w-full px-3 py-2.5 text-base bg-slate-50/80 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:bg-white font-medium"
+              class="data-field w-full px-3 py-2 text-sm bg-slate-50/80 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:bg-white font-medium"
               data-label="Parroquia">
           </div>
           <div>
             <label for="sector" class="block text-xs font-semibold text-slate-600 mb-1">Sector</label>
             <input type="text" id="sector" placeholder="Ej: Los Limones"
-              class="data-field w-full px-3 py-2.5 text-base bg-slate-50/80 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:bg-white font-medium"
+              class="data-field w-full px-3 py-2 text-sm bg-slate-50/80 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:bg-white font-medium"
               data-label="Sector">
           </div>
         </div>
@@ -293,7 +214,7 @@
         <div>
           <label for="asic" class="block text-xs font-semibold text-slate-600 mb-1">ASIC</label>
           <input type="text" id="asic" placeholder="Nombre de ASIC"
-            class="data-field w-full px-3 py-2.5 text-base bg-slate-50/80 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:bg-white font-medium"
+            class="data-field w-full px-3 py-2 text-sm bg-slate-50/80 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:bg-white font-medium"
             data-label="ASIC">
         </div>
 
@@ -301,11 +222,11 @@
           <label class="block text-xs font-semibold text-slate-600 mb-1">Responsables Asignados</label>
           <div class="space-y-1.5">
             <input type="text" value="Epid. César Martínez" readonly
-              class="w-full px-3 py-2 text-sm bg-slate-100 border border-slate-200 rounded-xl text-slate-600 font-semibold">
+              class="w-full px-3 py-1.5 text-xs bg-slate-100 border border-slate-200 rounded-xl text-slate-600 font-semibold">
             <input type="text" value="Insp. Hugo Pérez" readonly
-              class="w-full px-3 py-2 text-sm bg-slate-100 border border-slate-200 rounded-xl text-slate-600 font-semibold">
+              class="w-full px-3 py-1.5 text-xs bg-slate-100 border border-slate-200 rounded-xl text-slate-600 font-semibold">
             <input type="text" id="responsable_local" placeholder="Responsable por Municipio (Automático)" readonly
-              class="w-full px-3 py-2.5 text-sm bg-blue-50/90 border border-blue-200 rounded-xl text-blue-900 font-bold shadow-inner">
+              class="w-full px-3 py-2 text-xs bg-blue-50/90 border border-blue-200 rounded-xl text-blue-900 font-bold shadow-inner">
           </div>
         </div>
       </div>
@@ -318,7 +239,7 @@
             <div class="p-1.5 rounded-xl bg-indigo-50 text-indigo-700">
               <i data-lucide="users" class="w-4 h-4"></i>
             </div>
-            <h2 class="text-sm font-bold uppercase tracking-wider text-slate-700">Datos de Pacientes</h2>
+            <h2 class="text-xs font-bold uppercase tracking-wider text-slate-700">Datos de Pacientes</h2>
           </div>
         </div>
 
@@ -327,7 +248,7 @@
         </div>
 
         <button type="button" onclick="addPacienteField()"
-          class="w-full py-3 px-3 border-2 border-dashed border-indigo-200 hover:border-indigo-400 bg-indigo-50/40 text-indigo-700 font-bold text-sm rounded-xl flex items-center justify-center gap-2 transition-all shadow-sm">
+          class="w-full py-2.5 px-3 border-2 border-dashed border-indigo-200 hover:border-indigo-400 bg-indigo-50/40 text-indigo-700 font-bold text-xs rounded-xl flex items-center justify-center gap-2 transition-all shadow-sm">
           <i data-lucide="user-plus" class="w-4 h-4"></i> Añadir Otro Paciente
         </button>
       </div>
@@ -338,45 +259,45 @@
           <div class="p-1.5 rounded-xl bg-emerald-50 text-emerald-700">
             <i data-lucide="home" class="w-4 h-4"></i>
           </div>
-          <h2 class="text-sm font-bold uppercase tracking-wider text-slate-700">Inspección de Casas</h2>
+          <h2 class="text-xs font-bold uppercase tracking-wider text-slate-700">Inspección de Casas</h2>
         </div>
 
         <div class="grid grid-cols-2 gap-2.5">
           <div>
-            <label class="block text-xs font-semibold text-slate-500 mb-1">Visitadas</label>
+            <label class="block text-[19px] font-semibold text-slate-500 mb-1">Visitadas</label>
             <input type="number" id="casas_visitadas" value="0"
-              class="w-full px-3 py-2.5 text-base bg-slate-50/80 border border-slate-200 rounded-xl text-center font-bold text-slate-700">
+              class="w-full px-3 py-2 text-sm bg-slate-50/80 border border-slate-200 rounded-xl text-center font-bold text-slate-700">
           </div>
           <div>
-            <label class="block text-xs font-semibold text-slate-500 mb-1">Inspeccionadas</label>
+            <label class="block text-[19px] font-semibold text-slate-500 mb-1">Inspeccionadas</label>
             <input type="number" id="casas_inspeccionadas" value="0"
-              class="w-full px-3 py-2.5 text-base bg-slate-50/80 border border-slate-200 rounded-xl text-center font-bold text-slate-700">
+              class="w-full px-3 py-2 text-sm bg-slate-50/80 border border-slate-200 rounded-xl text-center font-bold text-slate-700">
           </div>
           <div>
-            <label class="block text-xs font-semibold text-slate-500 mb-1">Positivas</label>
+            <label class="block text-[19px] font-semibold text-slate-500 mb-1">Positivas</label>
             <input type="number" id="casas_positivas" value="0"
-              class="w-full px-3 py-2.5 text-base bg-slate-50/80 border border-slate-200 rounded-xl text-center font-bold text-red-600">
+              class="w-full px-3 py-2 text-sm bg-slate-50/80 border border-slate-200 rounded-xl text-center font-bold text-red-600">
           </div>
           <div>
-            <label class="block text-xs font-semibold text-slate-500 mb-1">Ausentes</label>
+            <label class="block text-[19px] font-semibold text-slate-500 mb-1">Ausentes</label>
             <input type="number" id="casas_ausentes" value="0"
-              class="w-full px-3 py-2.5 text-base bg-slate-50/80 border border-slate-200 rounded-xl text-center font-bold text-slate-700">
+              class="w-full px-3 py-2 text-sm bg-slate-50/80 border border-slate-200 rounded-xl text-center font-bold text-slate-700">
           </div>
           <div>
-            <label class="block text-xs font-semibold text-slate-500 mb-1">Renuentes</label>
+            <label class="block text-[19px] font-semibold text-slate-500 mb-1">Renuentes</label>
             <input type="number" id="casas_renuentes" value="0"
-              class="w-full px-3 py-2.5 text-base bg-slate-50/80 border border-slate-200 rounded-xl text-center font-bold text-slate-700">
+              class="w-full px-3 py-2 text-sm bg-slate-50/80 border border-slate-200 rounded-xl text-center font-bold text-slate-700">
           </div>
           <div>
-            <label class="block text-xs font-semibold text-slate-500 mb-1">Tratadas</label>
+            <label class="block text-[19px] font-semibold text-slate-500 mb-1">Tratadas</label>
             <input type="number" id="casas_tratadas" value="0"
-              class="w-full px-3 py-2.5 text-base bg-slate-50/80 border border-slate-200 rounded-xl text-center font-bold text-slate-700">
+              class="w-full px-3 py-2 text-sm bg-slate-50/80 border border-slate-200 rounded-xl text-center font-bold text-slate-700">
           </div>
         </div>
         <div>
-          <label class="block text-xs font-semibold text-slate-500 mb-1">Fumigadas</label>
+          <label class="block text-[19px] font-semibold text-slate-500 mb-1">Fumigadas</label>
           <input type="number" id="casas_fumigadas" value="0"
-            class="w-full px-3 py-2.5 text-base bg-slate-50/80 border border-slate-200 rounded-xl text-center font-bold text-slate-700">
+            class="w-full px-3 py-2 text-sm bg-slate-50/80 border border-slate-200 rounded-xl text-center font-bold text-slate-700">
         </div>
       </div>
 
@@ -387,19 +308,19 @@
           <div class="p-1.5 rounded-xl bg-amber-50 text-amber-700">
             <i data-lucide="building" class="w-4 h-4"></i>
           </div>
-          <h2 class="text-sm font-bold uppercase tracking-wider text-slate-700">Casas e Inspección (Roedores)</h2>
+          <h2 class="text-xs font-bold uppercase tracking-wider text-slate-700">Casas e Inspección (Roedores)</h2>
         </div>
 
         <div class="grid grid-cols-2 gap-3">
           <div>
             <label class="block text-xs font-semibold text-slate-600 mb-1">Nro. Casas Insp.</label>
             <input type="number" id="roedores_casas_insp" value="0"
-              class="w-full px-3 py-2.5 text-base bg-slate-50/80 border border-slate-200 rounded-xl text-center font-bold text-slate-700">
+              class="w-full px-3 py-2 text-sm bg-slate-50/80 border border-slate-200 rounded-xl text-center font-bold text-slate-700">
           </div>
           <div>
             <label class="block text-xs font-semibold text-slate-600 mb-1">Nro. Tratamiento</label>
             <input type="number" id="roedores_tratamiento" value="0"
-              class="w-full px-3 py-2.5 text-base bg-slate-50/80 border border-slate-200 rounded-xl text-center font-bold text-slate-700">
+              class="w-full px-3 py-2 text-sm bg-slate-50/80 border border-slate-200 rounded-xl text-center font-bold text-slate-700">
           </div>
         </div>
       </div>
@@ -410,29 +331,29 @@
           <div class="p-1.5 rounded-xl bg-cyan-50 text-cyan-700">
             <i data-lucide="droplet" class="w-4 h-4"></i>
           </div>
-          <h2 class="text-sm font-bold uppercase tracking-wider text-slate-700">Criaderos</h2>
+          <h2 class="text-xs font-bold uppercase tracking-wider text-slate-700">Criaderos</h2>
         </div>
 
         <div class="grid grid-cols-2 gap-2.5">
           <div>
-            <label class="block text-xs font-semibold text-slate-500 mb-1">Tratados</label>
+            <label class="block text-[19px] font-semibold text-slate-500 mb-1">Tratados</label>
             <input type="number" id="criaderos_tratados" value="0"
-              class="w-full px-3 py-2.5 text-base bg-slate-50/80 border border-slate-200 rounded-xl text-center font-bold text-slate-700">
+              class="w-full px-3 py-2 text-sm bg-slate-50/80 border border-slate-200 rounded-xl text-center font-bold text-slate-700">
           </div>
           <div>
-            <label class="block text-xs font-semibold text-slate-500 mb-1">Eliminados</label>
+            <label class="block text-[19px] font-semibold text-slate-500 mb-1">Eliminados</label>
             <input type="number" id="criaderos_eliminados" value="0"
-              class="w-full px-3 py-2.5 text-base bg-slate-50/80 border border-slate-200 rounded-xl text-center font-bold text-slate-700">
+              class="w-full px-3 py-2 text-sm bg-slate-50/80 border border-slate-200 rounded-xl text-center font-bold text-slate-700">
           </div>
           <div>
-            <label class="block text-xs font-semibold text-slate-500 mb-1">Inspeccionados</label>
+            <label class="block text-[19px] font-semibold text-slate-500 mb-1">Inspeccionados</label>
             <input type="number" id="criaderos_inspeccionados" value="0"
-              class="w-full px-3 py-2.5 text-base bg-slate-50/80 border border-slate-200 rounded-xl text-center font-bold text-slate-700">
+              class="w-full px-3 py-2 text-sm bg-slate-50/80 border border-slate-200 rounded-xl text-center font-bold text-slate-700">
           </div>
           <div>
-            <label class="block text-xs font-semibold text-slate-500 mb-1">Positivos</label>
+            <label class="block text-[19px] font-semibold text-slate-500 mb-1">Positivos</label>
             <input type="number" id="criaderos_positivos" value="0"
-              class="w-full px-3 py-2.5 text-base bg-slate-50/80 border border-slate-200 rounded-xl text-center font-bold text-red-600">
+              class="w-full px-3 py-2 text-sm bg-slate-50/80 border border-slate-200 rounded-xl text-center font-bold text-red-600">
           </div>
         </div>
       </div>
@@ -444,60 +365,60 @@
             <div class="p-1.5 rounded-xl bg-purple-50 text-purple-700">
               <i data-lucide="boxes" class="w-4 h-4"></i>
             </div>
-            <h2 class="text-sm font-bold uppercase tracking-wider text-slate-700">Depósitos y Criaderos</h2>
+            <h2 class="text-xs font-bold uppercase tracking-wider text-slate-700">Depósitos y Criaderos</h2>
           </div>
-          <span class="text-[11px] text-slate-400 font-bold uppercase tracking-wider">Cant | Positivos (+)</span>
+          <span class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Cant | Positivos (+)</span>
         </div>
 
-        <div class="space-y-2.5">
+        <div class="space-y-2">
           <!-- Tanques -->
           <div class="flex items-center justify-between gap-2">
-            <span class="text-sm font-bold text-slate-700 w-24">Tanques</span>
+            <span class="text-xs font-bold text-slate-700 w-20">Tanques</span>
             <div class="flex items-center space-x-2 flex-1">
               <input type="number" id="dep_tanques" value="0" placeholder="Cant"
-                class="w-full px-2.5 py-2 text-base bg-slate-50/80 border border-slate-200 rounded-xl text-center font-bold">
+                class="w-full px-2.5 py-1.5 text-sm bg-slate-50/80 border border-slate-200 rounded-xl text-center font-bold">
               <input type="number" id="dep_tanques_pos" value="0" placeholder="+"
-                class="w-full px-2.5 py-2 text-base bg-red-50/70 border border-red-200 rounded-xl text-center font-bold text-red-600">
+                class="w-full px-2.5 py-1.5 text-sm bg-red-50/70 border border-red-200 rounded-xl text-center font-bold text-red-600">
             </div>
           </div>
           <!-- Barriles -->
           <div class="flex items-center justify-between gap-2">
-            <span class="text-sm font-bold text-slate-700 w-24">Barriles</span>
+            <span class="text-xs font-bold text-slate-700 w-20">Barriles</span>
             <div class="flex items-center space-x-2 flex-1">
               <input type="number" id="dep_barriles" value="0" placeholder="Cant"
-                class="w-full px-2.5 py-2 text-base bg-slate-50/80 border border-slate-200 rounded-xl text-center font-bold">
+                class="w-full px-2.5 py-1.5 text-sm bg-slate-50/80 border border-slate-200 rounded-xl text-center font-bold">
               <input type="number" id="dep_barriles_pos" value="0" placeholder="+"
-                class="w-full px-2.5 py-2 text-base bg-red-50/70 border border-red-200 rounded-xl text-center font-bold text-red-600">
+                class="w-full px-2.5 py-1.5 text-sm bg-red-50/70 border border-red-200 rounded-xl text-center font-bold text-red-600">
             </div>
           </div>
           <!-- Cauchos -->
           <div class="flex items-center justify-between gap-2">
-            <span class="text-sm font-bold text-slate-700 w-24">Cauchos</span>
+            <span class="text-xs font-bold text-slate-700 w-20">Cauchos</span>
             <div class="flex items-center space-x-2 flex-1">
               <input type="number" id="dep_cauchos" value="0" placeholder="Cant"
-                class="w-full px-2.5 py-2 text-base bg-slate-50/80 border border-slate-200 rounded-xl text-center font-bold">
+                class="w-full px-2.5 py-1.5 text-sm bg-slate-50/80 border border-slate-200 rounded-xl text-center font-bold">
               <input type="number" id="dep_cauchos_pos" value="0" placeholder="+"
-                class="w-full px-2.5 py-2 text-base bg-red-50/70 border border-red-200 rounded-xl text-center font-bold text-red-600">
+                class="w-full px-2.5 py-1.5 text-sm bg-red-50/70 border border-red-200 rounded-xl text-center font-bold text-red-600">
             </div>
           </div>
           <!-- Materos -->
           <div class="flex items-center justify-between gap-2">
-            <span class="text-sm font-bold text-slate-700 w-24">Materos</span>
+            <span class="text-xs font-bold text-slate-700 w-20">Materos</span>
             <div class="flex items-center space-x-2 flex-1">
               <input type="number" id="dep_materos" value="0" placeholder="Cant"
-                class="w-full px-2.5 py-2 text-base bg-slate-50/80 border border-slate-200 rounded-xl text-center font-bold">
+                class="w-full px-2.5 py-1.5 text-sm bg-slate-50/80 border border-slate-200 rounded-xl text-center font-bold">
               <input type="number" id="dep_materos_pos" value="0" placeholder="+"
-                class="w-full px-2.5 py-2 text-base bg-red-50/70 border border-red-200 rounded-xl text-center font-bold text-red-600">
+                class="w-full px-2.5 py-1.5 text-sm bg-red-50/70 border border-red-200 rounded-xl text-center font-bold text-red-600">
             </div>
           </div>
           <!-- Diversos -->
           <div class="flex items-center justify-between gap-2">
-            <span class="text-sm font-bold text-slate-700 w-24">Diversos</span>
+            <span class="text-xs font-bold text-slate-700 w-20">Diversos</span>
             <div class="flex items-center space-x-2 flex-1">
               <input type="number" id="dep_diversos" value="0" placeholder="Cant"
-                class="w-full px-2.5 py-2 text-base bg-slate-50/80 border border-slate-200 rounded-xl text-center font-bold">
+                class="w-full px-2.5 py-1.5 text-sm bg-slate-50/80 border border-slate-200 rounded-xl text-center font-bold">
               <input type="number" id="dep_diversos_pos" value="0" placeholder="+"
-                class="w-full px-2.5 py-2 text-base bg-red-50/70 border border-red-200 rounded-xl text-center font-bold text-red-600">
+                class="w-full px-2.5 py-1.5 text-sm bg-red-50/70 border border-red-200 rounded-xl text-center font-bold text-red-600">
             </div>
           </div>
         </div>
@@ -509,7 +430,7 @@
           <div class="p-1.5 rounded-xl bg-amber-50 text-amber-700">
             <i data-lucide="flask-conical" class="w-4 h-4"></i>
           </div>
-          <h2 class="text-sm font-bold uppercase tracking-wider text-slate-700">Insumos y Cobertura</h2>
+          <h2 class="text-xs font-bold uppercase tracking-wider text-slate-700">Insumos y Cobertura</h2>
         </div>
 
         <div id="insumos-aedes" class="space-y-3">
@@ -517,9 +438,9 @@
             <label class="block text-xs font-semibold text-slate-600 mb-1">Gasto Abate</label>
             <div class="flex space-x-2">
               <input type="number" id="gasto_abate" value="0" step="0.1"
-                class="flex-1 px-3 py-2.5 text-base bg-slate-50/80 border border-slate-200 rounded-xl font-bold">
+                class="flex-1 px-3 py-2 text-sm bg-slate-50/80 border border-slate-200 rounded-xl font-bold">
               <select id="unidad_abate"
-                class="w-32 px-2 py-2.5 text-sm bg-slate-50/80 border border-slate-200 rounded-xl font-bold text-slate-700">
+                class="w-28 px-2 py-2 text-xs bg-slate-50/80 border border-slate-200 rounded-xl font-bold text-slate-700">
                 <option value="Gramos">Gramos</option>
                 <option value="Kilos">Kilos</option>
               </select>
@@ -530,9 +451,9 @@
             <label class="block text-xs font-semibold text-slate-600 mb-1">Gasto Insecticida</label>
             <div class="flex space-x-2">
               <input type="number" id="gasto_insecticida" value="0" step="0.1"
-                class="flex-1 px-3 py-2.5 text-base bg-slate-50/80 border border-slate-200 rounded-xl font-bold">
+                class="flex-1 px-3 py-2 text-sm bg-slate-50/80 border border-slate-200 rounded-xl font-bold">
               <select id="unidad_insecticida"
-                class="w-32 px-2 py-2.5 text-sm bg-slate-50/80 border border-slate-200 rounded-xl font-bold text-slate-700">
+                class="w-28 px-2 py-2 text-xs bg-slate-50/80 border border-slate-200 rounded-xl font-bold text-slate-700">
                 <option value="Litros">Litros</option>
                 <option value="Mililitros">Mililitros</option>
               </select>
@@ -545,9 +466,9 @@
             <label class="block text-xs font-semibold text-slate-600 mb-1">Gasto Rodenticida</label>
             <div class="flex space-x-2">
               <input type="number" id="gasto_rodenticida" value="0" step="0.1"
-                class="flex-1 px-3 py-2.5 text-base bg-slate-50/80 border border-slate-200 rounded-xl font-bold">
+                class="flex-1 px-3 py-2 text-sm bg-slate-50/80 border border-slate-200 rounded-xl font-bold">
               <select id="unidad_rodenticida"
-                class="w-32 px-2 py-2.5 text-sm bg-slate-50/80 border border-slate-200 rounded-xl font-bold text-slate-700">
+                class="w-28 px-2 py-2 text-xs bg-slate-50/80 border border-slate-200 rounded-xl font-bold text-slate-700">
                 <option value="Gramos">Gramos</option>
                 <option value="Kilos">Kilos</option>
               </select>
@@ -558,7 +479,7 @@
         <div>
           <label class="block text-xs font-semibold text-slate-600 mb-1">Habitantes Protegidos</label>
           <input type="number" id="hab_protegidos" value="0"
-            class="w-full px-3 py-2.5 text-base bg-slate-50/80 border border-slate-200 rounded-xl font-bold">
+            class="w-full px-3 py-2 text-sm bg-slate-50/80 border border-slate-200 rounded-xl font-bold">
         </div>
       </div>
 
@@ -570,7 +491,7 @@
     class="fixed bottom-0 left-0 right-0 p-3 bg-white/90 backdrop-blur-md border-t border-slate-200/80 z-40 shadow-lg">
     <div class="max-w-md mx-auto">
       <button type="button" onclick="openRecipientModal()"
-        class="w-full py-3.5 px-4 bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white font-bold text-base rounded-xl shadow-lg shadow-emerald-600/30 flex items-center justify-center gap-2 transition-all">
+        class="w-full py-3.5 px-4 bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white font-bold text-sm rounded-xl shadow-lg shadow-emerald-600/30 flex items-center justify-center gap-2 transition-all">
         <i data-lucide="send" class="w-5 h-5"></i> Enviar Reporte por WhatsApp
       </button>
     </div>
@@ -586,7 +507,7 @@
             <i data-lucide="users" class="w-5 h-5"></i>
           </div>
           <div>
-            <h3 class="text-base font-bold text-slate-800">Seleccionar Destinatario</h3>
+            <h3 class="text-sm font-bold text-slate-800">Seleccionar Destinatario</h3>
             <p class="text-xs text-slate-500">Elija el contacto a quien enviará el reporte</p>
           </div>
         </div>
@@ -601,116 +522,13 @@
       </div>
 
       <button type="button" onclick="closeRecipientModal()"
-        class="w-full py-3 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-sm rounded-xl transition-all">
+        class="w-full py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs rounded-xl transition-all">
         Cancelar
       </button>
     </div>
   </div>
 
   <script>
-    /* ===================================================================
-     * LÓGICA DEL MOSQUITO CÓMICO (VUELO ORGÁNICO E INTERACCIÓN)
-     * =================================================================== */
-    (function initMosquito() {
-      const mosquito = document.getElementById('mosquito-actor');
-      const speech = document.getElementById('mosquito-speech');
-      if (!mosquito || !speech) return;
-
-      const frasesComicas = [
-        "¡Bzzzz! ¡No me echen Abate!",
-        "¡Cuidado que vengo de un caucho!",
-        "¡A mí no me atrapan hoy!",
-        "¡Puro Apure, compadre!",
-        "¡Zzzzz! ¡Abate no, por favor!",
-        "¡Ese tanque está tapado, qué aburrido!",
-        "¡Sálvese quien pueda, llegó Salud Ambiental!"
-      ];
-
-      let x = window.innerWidth * 0.7;
-      let y = window.innerHeight * 0.25;
-      let targetX = Math.random() * (window.innerWidth - 60) + 10;
-      let targetY = Math.random() * (window.innerHeight - 140) + 40;
-      let angle = 0;
-      let speed = 2.4;
-      let isEscaping = false;
-      let speechTimeout = null;
-
-      function saySomething(customText) {
-        const text = customText || frasesComicas[Math.floor(Math.random() * frasesComicas.length)];
-        speech.textContent = text;
-        speech.style.opacity = '1';
-        clearTimeout(speechTimeout);
-        speechTimeout = setTimeout(() => {
-          speech.style.opacity = '0';
-        }, 2400);
-      }
-
-      // Al tocar o hacer clic al mosquito, huye rápido y suelta una frase
-      function scareMosquito(e) {
-        e.stopPropagation();
-        isEscaping = true;
-        speed = 4.5;
-        targetX = (x > window.innerWidth / 2) ? 30 : window.innerWidth - 70;
-        targetY = (y > window.innerHeight / 2) ? 60 : window.innerHeight - 150;
-        saySomething("¡Ay! ¡Me van a fumigar! ¡Bzzzz!");
-        setTimeout(() => {
-          isEscaping = false;
-          speed = 1.4;
-        }, 900);
-      }
-
-      mosquito.addEventListener('click', scareMosquito);
-      mosquito.addEventListener('touchstart', scareMosquito, { passive: true });
-
-      // Frase aleatoria ocasional mientras revolotea
-      setInterval(() => {
-        if (!isEscaping && Math.random() < 0.45) {
-          saySomething();
-        }
-      }, 9000);
-
-      function flyLoop() {
-        const dx = targetX - x;
-        const dy = targetY - y;
-        const dist = Math.hypot(dx, dy);
-
-        // Elegir nuevo destino aleatorio al acercarse
-        if (dist < 25) {
-          targetX = Math.random() * (window.innerWidth - 65) + 15;
-          targetY = Math.random() * (window.innerHeight - 150) + 50;
-        }
-
-        // Movimiento con zig-zag errático típico de mosquito
-        const jitterX = (Math.random() - 0.5) * 3.2;
-        const jitterY = (Math.random() - 0.5) * 3.2;
-
-        const moveAngle = Math.atan2(dy, dx);
-        x += Math.cos(moveAngle) * speed + jitterX;
-        y += Math.sin(moveAngle) * speed + jitterY;
-
-        // Mantener dentro de los bordes visibles de la pantalla
-        x = Math.max(8, Math.min(window.innerWidth - 56, x));
-        y = Math.max(8, Math.min(window.innerHeight - 80, y));
-
-        // Orientar la cabeza del mosquito hacia donde vuela
-        const targetDeg = (moveAngle * 180 / Math.PI) + 90;
-        angle += (targetDeg - angle) * 0.15;
-
-        mosquito.style.transform = `translate3d(${x}px, ${y}px, 0) rotate(${angle}deg)`;
-
-        // Posicionar el globo de texto cerca del mosquito sin salirse de pantalla
-        const speechX = Math.max(10, Math.min(window.innerWidth - 210, x - 60));
-        const speechY = (y > 65) ? (y - 28) : (y + 52);
-        speech.style.transform = `translate3d(${speechX}px, ${speechY}px, 0)`;
-
-        requestAnimationFrame(flyLoop);
-      }
-
-      // Saludar brevemente al abrir la página
-      setTimeout(() => saySomething("¡Bzzzz! ¡Bienvenido al reporte!"), 1200);
-      requestAnimationFrame(flyLoop);
-    })();
-
     /* ===================================================================
      * MAPAS DE RESPONSABLES POR MUNICIPIO (AEDES Y ROEDORES)
      * =================================================================== */
@@ -824,8 +642,8 @@
         item.onclick = () => sendReportTo(dest.numero);
         item.innerHTML = `
           <div>
-            <p class="text-sm font-bold text-slate-800 group-hover:text-emerald-800">${dest.nombre}</p>
-            <p class="text-xs text-slate-500 font-medium">${dest.cargo}</p>
+            <p class="text-xs font-bold text-slate-800 group-hover:text-emerald-800">${dest.nombre}</p>
+            <p class="text-[19px] text-slate-500 font-medium">${dest.cargo}</p>
           </div>
           <i data-lucide="chevron-right" class="w-4 h-4 text-slate-400 group-hover:text-emerald-600"></i>
         `;
@@ -845,8 +663,8 @@
       const subAedes = document.getElementById('sub-aedes-container');
 
       if (prog === 'aedes') {
-        tabAedes.className = "py-3 px-3 rounded-xl font-bold text-sm flex items-center justify-center gap-2 transition-all duration-200 shadow-sm bg-white text-blue-900";
-        tabRoedores.className = "py-3 px-3 rounded-xl font-semibold text-sm flex items-center justify-center gap-2 transition-all duration-200 text-slate-600 hover:text-slate-900";
+        tabAedes.className = "py-2.5 px-3 rounded-xl font-bold text-xs flex items-center justify-center gap-2 transition-all duration-200 shadow-sm bg-white text-blue-900";
+        tabRoedores.className = "py-2.5 px-3 rounded-xl font-semibold text-xs flex items-center justify-center gap-2 transition-all duration-200 text-slate-600 hover:text-slate-900";
         subAedes.classList.remove('hidden');
 
         document.getElementById('section-casas').classList.remove('hidden');
@@ -860,8 +678,8 @@
         setAedesType(currentAedesType);
 
       } else {
-        tabRoedores.className = "py-3 px-3 rounded-xl font-bold text-sm flex items-center justify-center gap-2 transition-all duration-200 shadow-sm bg-white text-blue-900";
-        tabAedes.className = "py-3 px-3 rounded-xl font-semibold text-sm flex items-center justify-center gap-2 transition-all duration-200 text-slate-600 hover:text-slate-900";
+        tabRoedores.className = "py-2.5 px-3 rounded-xl font-bold text-xs flex items-center justify-center gap-2 transition-all duration-200 shadow-sm bg-white text-blue-900";
+        tabAedes.className = "py-2.5 px-3 rounded-xl font-semibold text-xs flex items-center justify-center gap-2 transition-all duration-200 text-slate-600 hover:text-slate-900";
         subAedes.classList.add('hidden');
 
         document.getElementById('section-casas').classList.add('hidden');
@@ -886,12 +704,12 @@
       const secPacientes = document.getElementById('section-pacientes');
 
       if (type === 'abordaje') {
-        btnAbordaje.className = "py-2.5 px-3 rounded-xl text-xs font-bold text-center transition-all bg-blue-700 text-white shadow-sm";
-        btnFocal.className = "py-2.5 px-3 rounded-xl text-xs font-semibold text-center transition-all text-slate-600 hover:bg-white/50";
+        btnAbordaje.className = "py-2 px-3 rounded-xl text-xs font-bold text-center transition-all bg-blue-700 text-white shadow-sm";
+        btnFocal.className = "py-2 px-3 rounded-xl text-xs font-semibold text-center transition-all text-slate-600 hover:bg-white/50";
         secPacientes.classList.add('hidden');
       } else {
-        btnFocal.className = "py-2.5 px-3 rounded-xl text-xs font-bold text-center transition-all bg-blue-700 text-white shadow-sm";
-        btnAbordaje.className = "py-2.5 px-3 rounded-xl text-xs font-semibold text-center transition-all text-slate-600 hover:bg-white/50";
+        btnFocal.className = "py-2 px-3 rounded-xl text-xs font-bold text-center transition-all bg-blue-700 text-white shadow-sm";
+        btnAbordaje.className = "py-2 px-3 rounded-xl text-xs font-semibold text-center transition-all text-slate-600 hover:bg-white/50";
         secPacientes.classList.remove('hidden');
       }
       checkMissingFields();
@@ -946,25 +764,25 @@
           ` : ''}
         </div>
         <div>
-          <label class="block text-xs font-semibold text-slate-500 mb-0.5">Nombre Completo</label>
-          <input type="text" class="pac-nombre data-field w-full px-3 py-2 text-sm bg-white border border-slate-200 rounded-lg font-medium" placeholder="Nombre del paciente" data-label="Nombre Paciente #${count}">
+          <label class="block text-[19px] font-semibold text-slate-500 mb-0.5">Nombre Completo</label>
+          <input type="text" class="pac-nombre data-field w-full px-2.5 py-1.5 text-xs bg-white border border-slate-200 rounded-lg font-medium" placeholder="Nombre del paciente" data-label="Nombre Paciente #${count}">
         </div>
         <div class="grid grid-cols-2 gap-2">
           <div>
-            <label class="block text-xs font-semibold text-slate-500 mb-0.5">Edad (Años)</label>
-            <input type="number" class="pac-edad data-field w-full px-3 py-2 text-sm bg-white border border-slate-200 rounded-lg font-medium" placeholder="Edad" data-label="Edad Paciente #${count}">
+            <label class="block text-[19px] font-semibold text-slate-500 mb-0.5">Edad (Años)</label>
+            <input type="number" class="pac-edad data-field w-full px-2.5 py-1.5 text-xs bg-white border border-slate-200 rounded-lg font-medium" placeholder="Edad" data-label="Edad Paciente #${count}">
           </div>
           <div>
-            <label class="block text-xs font-semibold text-slate-500 mb-0.5">C.I.</label>
-            <input type="text" class="pac-ci data-field w-full px-3 py-2 text-sm bg-white border border-slate-200 rounded-lg font-medium" placeholder="V-0000000" data-label="C.I. Paciente #${count}">
+            <label class="block text-[19px] font-semibold text-slate-500 mb-0.5">C.I.</label>
+            <input type="text" class="pac-ci data-field w-full px-2.5 py-1.5 text-xs bg-white border border-slate-200 rounded-lg font-medium" placeholder="V-0000000" data-label="C.I. Paciente #${count}">
           </div>
         </div>
         <div>
-          <label class="block text-xs font-semibold text-slate-500 mb-0.5">Fecha de Nacimiento (F.N)</label>
+          <label class="block text-[19px] font-semibold text-slate-500 mb-0.5">Fecha de Nacimiento (F.N)</label>
           <div class="grid grid-cols-3 gap-1.5">
-            <input type="number" class="pac-fndia data-field w-full px-2 py-1.5 text-sm bg-white border border-slate-200 rounded-lg text-center font-medium" placeholder="Día" data-label="Día F.N. Paciente #${count}">
-            <input type="number" class="pac-fnmes data-field w-full px-2 py-1.5 text-sm bg-white border border-slate-200 rounded-lg text-center font-medium" placeholder="Mes" data-label="Mes F.N. Paciente #${count}">
-            <input type="number" class="pac-fnano data-field w-full px-2 py-1.5 text-sm bg-white border border-slate-200 rounded-lg text-center font-medium" placeholder="Año" data-label="Año F.N. Paciente #${count}">
+            <input type="number" class="pac-fndia data-field w-full px-2 py-1 text-xs bg-white border border-slate-200 rounded-lg text-center font-medium" placeholder="Día" data-label="Día F.N. Paciente #${count}">
+            <input type="number" class="pac-fnmes data-field w-full px-2 py-1 text-xs bg-white border border-slate-200 rounded-lg text-center font-medium" placeholder="Mes" data-label="Mes F.N. Paciente #${count}">
+            <input type="number" class="pac-fnano data-field w-full px-2 py-1 text-xs bg-white border border-slate-200 rounded-lg text-center font-medium" placeholder="Año" data-label="Año F.N. Paciente #${count}">
           </div>
         </div>
       `;
@@ -987,14 +805,17 @@
 
     // FUNCIÓN DE RESTABLECIMIENTO DE DATOS DEL FORMULARIO
     function resetReportForm() {
+      // 1. Resetear inputs de texto, select y numéricos generales
       document.getElementById('municipio').value = "";
       document.getElementById('parroquia').value = "";
       document.getElementById('sector').value = "";
       document.getElementById('asic').value = "";
       document.getElementById('responsable_local').value = "";
 
+      // 2. Restablecer fechas al día actual
       resetFormDates();
 
+      // 3. Restablecer valores numéricos a 0
       const numberInputs = document.querySelectorAll('input[type="number"]');
       numberInputs.forEach(input => {
         if (input.id !== 'fecha_dia' && input.id !== 'fecha_mes' && input.id !== 'fecha_ano') {
@@ -1002,10 +823,12 @@
         }
       });
 
+      // 4. Limpiar pacientes dinámicos y dejar uno limpio por defecto
       const pacContainer = document.getElementById('pacientes-list');
       pacContainer.innerHTML = '';
       addPacienteField();
 
+      // 5. Restablecer clases de faltantes y ocultar alerta de faltantes
       const fields = document.querySelectorAll('.data-field');
       fields.forEach(f => f.classList.remove('input-missing'));
       document.getElementById('missing-alert').classList.add('hidden');
@@ -1091,6 +914,7 @@ Pasión por Apure!!!`;
       const cleanPhone = phoneNum.replace(/[^0-9]/g, '');
       const targetUrl = `https://api.whatsapp.com/send?phone=${cleanPhone}&text=${encodeURIComponent(messageText)}`;
 
+      // Redirigir a WhatsApp y ejecutar el reseteo de los datos
       setTimeout(() => {
         window.location.href = targetUrl;
         resetReportForm();
@@ -1208,8 +1032,8 @@ DEPOSITOS  Y CRIADEROS
   <div class="fixed bottom-20 right-4 z-40">
     <a href="https://github.com/gersonsolano93-beep/Reportediario/raw/refs/heads/main/Salud%20Ambiental%20Reporte%20Diario.apk"
        download="Salud_Ambiental_Apure.apk"
-       class="floating-apk-btn flex items-center gap-2 bg-gradient-to-r from-blue-700 to-indigo-700 hover:from-blue-800 hover:to-indigo-800 text-white font-bold py-3 px-4 rounded-full shadow-2xl border-2 border-white/30 backdrop-blur-md transition-all active:scale-95">
-      <div class="w-7 h-7 rounded-full bg-white/20 flex items-center justify-center shrink-0">
+       class="floating-apk-btn flex items-center gap-2 bg-gradient-to-r from-blue-700 to-indigo-700 hover:from-blue-800 hover:to-indigo-800 text-white font-bold py-1 px-2 rounded-full shadow-2xl border-2 border-white/30 backdrop-blur-md transition-all active:scale-95">
+      <div class="w-6 h-6 rounded-full bg-white/20 flex items-center justify-center shrink-0">
         <i data-lucide="arrow-down" class="w-4 h-4 text-white animate-bounce"></i>
       </div>
       <div class="flex flex-col text-left leading-tight pr-1">
